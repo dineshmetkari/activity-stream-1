@@ -5,7 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-        <dependent-module archiveName="ActivityDummyBackEnd-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ActivityDummyBackEnd/ActivityDummyBackEnd">
+        <dependent-module archiveName="ActivityStreamBackEnd-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ActivityStreamBackEnd/ActivityStreamBackEnd">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="ActivityRestService"/>

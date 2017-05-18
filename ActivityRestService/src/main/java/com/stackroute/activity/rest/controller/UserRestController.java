@@ -29,7 +29,7 @@ public class UserRestController {
     
 	@GetMapping(value="/user/")
     public ResponseEntity<List<User>> listAllUsers() {
-        List<User> users = userDAO.listUsers();
+        List<User> users = userDAO.list();
         if(users.isEmpty()){
             return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -39,9 +39,9 @@ public class UserRestController {
 	//-------------------Retrieve Single User--------------------------------------------------------
     
 	@GetMapping(value="/user/id/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable("id") long id) {
+    public ResponseEntity<User> getUser(@PathVariable("id") String id) {
         System.out.println("Fetching User with id " + id);
-        User user = userDAO.getUserByUserId(id);
+        User user = userDAO.get(id);
         if (user == null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -50,30 +50,22 @@ public class UserRestController {
     }		
 
 	
-	@GetMapping(value="/user/username/{username}",produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser(@PathVariable("username") String username) {
-        
-        User user = userDAO.getUserByUsername(username);
-        if (user == null) {
-            
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }
+	
 	
 	
 	 //-------------------Create a User--------------------------------------------------------
     
 	@PostMapping(value = "/user/")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
-        System.out.println("Creating User " + user.getUsername());
+        System.out.println("Creating User " + user.getName());
   
-        if (userDAO.isExistingUser(user)) {
-            System.out.println("A User with name " + user.getUsername() + " already exist");
+        User u=userDAO.get(user.getId());
+        if (u!=null) {
+            System.out.println("A User with name " + user.getName() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
   
-        userDAO.addUser(user);
+        userDAO.save(user);
   
        
         return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -83,24 +75,24 @@ public class UserRestController {
 	 //------------------- Update a User --------------------------------------------------------
     
 	@PutMapping(value = "/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User user) {
         System.out.println("Updating User " + id);
           
-        User currentUser = userDAO.getUserByUserId(id);
+        User currentUser = userDAO.get(id);
           
         if (currentUser==null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
   
-        currentUser.setFirstName(user.getFirstName());
-        currentUser.setLastName(user.getLastName());
-        currentUser.setUsername(user.getUsername());
+        
+        currentUser.setName(user.getName());
         currentUser.setPassword(user.getPassword());
         
         
+        
           
-        userDAO.updateUser(currentUser);
+        userDAO.update(currentUser);
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
     }
 	
@@ -110,10 +102,10 @@ public class UserRestController {
       public ResponseEntity<User> authenticate(@RequestBody User user,HttpSession session) {
           
     
-          if (userDAO.authenticate(user.getUsername(),user.getPassword())) {
-        	  User u=userDAO.getUserByUsername(user.getUsername());
+          if (userDAO.validate(user.getId(),user.getPassword())) {
+        	  User u=userDAO.get(user.getName());
         	  session.setAttribute("loggedInUser", u);
-        	  session.setAttribute("loggedInUserId", u.getUserId());
+        	  session.setAttribute("loggedInUserId", u.getId());
         	  System.out.println("Logged in User ID:"+session.getAttribute("loggedInUserId").toString());
               return new ResponseEntity<User>(u,HttpStatus.OK);
           }
@@ -130,7 +122,7 @@ public class UserRestController {
   	@PutMapping(value = "/user/logout")
       public ResponseEntity<User> logout(HttpSession session) {
           
-  		Long userId=(Long)session.getAttribute("loggedInUserId");
+  		String userId=(String)session.getAttribute("loggedInUserId");
   		
   		
   		session.invalidate();
