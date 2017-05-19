@@ -2,6 +2,8 @@ package com.stackroute.activity.rest.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,10 @@ import com.stackroute.activity.model.Circle;
 @RestController
 public class CircleRestController {
 	
+	private static final Logger logger =
+			LoggerFactory.getLogger(CircleRestController.class);
+
+	
 	@Autowired
 	CircleDAO circleDAO;
 	
@@ -28,7 +34,8 @@ public class CircleRestController {
 		
 		Circle c=circleDAO.get(circle.getId());
 		if (c!=null) {
-            System.out.println("A circle with name " + circle.getName() + " already exist");
+			
+            logger.debug("A circle with name " + circle.getName() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 		

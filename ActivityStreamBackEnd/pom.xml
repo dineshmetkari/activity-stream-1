@@ -28,6 +28,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
+			<exclusions>
+    <exclusion>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    </exclusion>
+    </exclusions>
 		</dependency>
 
 		<dependency>
@@ -66,6 +72,12 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.0</version>
+			<exclusions>
+    <exclusion>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging</artifactId>
+    </exclusion>
+    </exclusions>
 		</dependency>
 
 		<!-- MySQL JDBC Driver -->
