@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Entity
 @Table
-public class Circle {
+public class Circle extends BaseDomain{
 	
 	@Id
 	private String id;

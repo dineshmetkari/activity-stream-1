@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stackroute.activity.dao.CircleDAO;
 import com.stackroute.activity.model.Circle;
+import com.stackroute.activity.model.UserCircle;
 
 @RestController
 public class CircleRestController {
@@ -27,79 +28,89 @@ public class CircleRestController {
 	@Autowired
 	CircleDAO circleDAO;
 	
+	@Autowired
+	UserCircle userCircle;
+	
 	
 	
 	@PostMapping("/circle/create")
-	public ResponseEntity<Void> createCircle(@RequestBody Circle circle){
+	public Circle createCircle(@RequestBody Circle circle){
 		
 		Circle c=circleDAO.get(circle.getId());
 		if (c!=null) {
 			
             logger.debug("A circle with name " + circle.getName() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            Circle errorCircle=new Circle();
+            errorCircle.setErrorCode("409");
+            errorCircle.setErrorMessage("Circle with the name "+circle.getName()+" already exists");
+            return errorCircle;
         }
 		
 		circleDAO.save(circle);
-		
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		circle.setErrorCode("200");
+		circle.setErrorMessage("Circle created successfully");
+		return circle;
 	}
 	
+	
 	@PutMapping("/circle/add/{userId}/{circleId}")
-	public ResponseEntity<Void> addUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
+	public UserCircle addUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
 		
 		boolean status=circleDAO.addUser(userId, circleId);
 		if(status==false){
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			userCircle.setErrorCode("409");
+			userCircle.setErrorMessage("User could not be added. Either user does not exist or he is already added to circle");
+			
 		}
 		else
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		{
+			userCircle.setErrorCode("200");
+			userCircle.setErrorMessage("User added successfully");
+			
+		}
+		return userCircle;
 	}
 	
 	@PutMapping("/circle/remove/{userId}/{circleId}")
-	public ResponseEntity<Void> removeUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
+	public UserCircle removeUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
 		
 		boolean status=circleDAO.removeUser(userId, circleId);
 		if(status==false){
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			userCircle.setErrorCode("404");
+			userCircle.setErrorMessage("User not found");
+			
 		}
 		else
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		
-		
+		{
+			userCircle.setErrorCode("200");
+			userCircle.setErrorMessage("User removed successfully");
+			
+		}
+		return userCircle;
 	}
 	
 	//-------------------------------Retrieve all circles-------------------------------------
 	@GetMapping("/circle")
-	public ResponseEntity<List<Circle>> getAllCircles(){
+	public List<Circle> getAllCircles(){
 	
-		List<Circle> circles=circleDAO.getAllCircles();
-		if(circles.isEmpty()){
-			return new ResponseEntity<List<Circle>>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Circle>>(circles, HttpStatus.OK);
+		return circleDAO.getAllCircles();
+		
 	}
 	
 //-----------------------Retrieve circles for a specific user--------------------------------	
 	@GetMapping("/circle/search/user/{userId}")
-	public ResponseEntity<List<Circle>> getMyCircles(@PathVariable("userId") String userId){
+	public List<Circle> getMyCircles(@PathVariable("userId") String userId){
 		
-		List<Circle> circles=circleDAO.getMyCircles(userId);
-		if(circles.isEmpty()){
-			return new ResponseEntity<List<Circle>>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Circle>>(circles, HttpStatus.OK);
+		return circleDAO.getMyCircles(userId);
+		
 	}
 	
 //----------------------Retrieve circles by Search String-----------------------------------	
 	@GetMapping("/circle/search/{searchString}")
-	public ResponseEntity<List<Circle>> getAllCircles(@PathVariable("searchString") String searchString){
+	public List<Circle> getAllCircles(@PathVariable("searchString") String searchString){
 		
-		List<Circle> circles=circleDAO.getAllCircles(searchString);
+		return circleDAO.getAllCircles(searchString);
 		
-		if(circles.isEmpty()){
-			return new ResponseEntity<List<Circle>>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<List<Circle>>(circles, HttpStatus.OK);
 		
 	}
 
