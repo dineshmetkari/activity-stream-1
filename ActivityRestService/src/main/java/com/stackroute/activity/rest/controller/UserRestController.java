@@ -123,6 +123,8 @@ public class UserRestController {
         	  session.setAttribute("loggedInUser", u);
         	  session.setAttribute("loggedInUserId", u.getId());
         	  logger.debug("Logged in User ID:"+session.getAttribute("loggedInUserId").toString());
+        	  user.setErrorCode("200");
+        	  user.setErrorMessage("Authentication successful");
               return user;
           }
     

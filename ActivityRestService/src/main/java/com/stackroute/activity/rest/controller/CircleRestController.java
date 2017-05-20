@@ -99,7 +99,7 @@ public class CircleRestController {
 	
 //-----------------------Retrieve circles for a specific user--------------------------------	
 	@GetMapping("/circle/search/user/{userId}")
-	public List<Circle> getMyCircles(@PathVariable("userId") String userId){
+	public List<String> getMyCircles(@PathVariable("userId") String userId){
 		
 		return circleDAO.getMyCircles(userId);
 		

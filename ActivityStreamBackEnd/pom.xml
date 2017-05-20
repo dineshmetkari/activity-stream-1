@@ -29,10 +29,10 @@
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework-version}</version>
 			<exclusions>
-    <exclusion>
+   <!--  <exclusion>
     	<groupId>commons-logging</groupId>
     	<artifactId>commons-logging</artifactId>
-    </exclusion>
+    </exclusion> -->
     </exclusions>
 		</dependency>
 

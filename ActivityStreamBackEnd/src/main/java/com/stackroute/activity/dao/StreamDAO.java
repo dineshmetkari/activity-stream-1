@@ -8,12 +8,14 @@ import com.stackroute.activity.model.Stream;
 
 public interface StreamDAO {
 	
-	public SortedMap<Long,Stream> getMessages(List<Circle> circles);
+	public List<Stream> getMessagesFromCircle(String circleName); 
 	
-	public boolean sendMessage(Circle circle);
+	public List<Stream> getMessages(String userID); 
 	
-	public boolean sendMessage(String userID);
-	
-	public boolean sendMessage(List<Circle> circles);
+	public boolean sendMessageToCircle(String circleName,Stream stream);
+	 
+	public boolean sendMessageToUser(String userID,Stream stream);
+	 	
+	public boolean sendMessageToCircles(List<String> circleNames,Stream stream);
 
 }

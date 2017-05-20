@@ -15,7 +15,7 @@ public interface CircleDAO {
 	
 	public List<Circle> getAllCircles();
 	
-	public List<Circle> getMyCircles(String userID);
+	public List<String> getMyCircles(String userID);
 	
 	public List<Circle> getAllCircles(String searchString);
 	

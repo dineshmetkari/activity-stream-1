@@ -115,8 +115,8 @@ public class CircleDAOImpl implements CircleDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Circle> getMyCircles(String userID) {
-		return getCurrentSession().createQuery("from UserCircle where userID= ?")
+	public List<String> getMyCircles(String userID) {
+		return getCurrentSession().createQuery("select circleID from UserCircle where userID= ?")
 				.setString(0, userID)
 				.list();
 	}
