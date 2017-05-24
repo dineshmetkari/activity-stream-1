@@ -1,0 +1,50 @@
+<div class="ui bottom attached segment pushable homepage">
+  <div class="ui visible inverted left vertical sidebar menu">
+  
+  <a class="item">
+      Hi {{vm.user.id}}!!
+    </a>
+  
+    <a class="item">
+      <i class="folder open icon"></i>
+      Home
+    </a>
+    <a class="item" ng-repeat="circle in vm.circles" ng-click="vm.selectCircle(circle)">
+      <i class="circle thin icon"></i>
+      {{circle}}
+    </a>
+   
+  </div>
+  
+  <div class="pusher">
+  <div class="ui fluid container">
+    <div class="ui basic segment">
+      <h3 class="ui header">Application Content</h3>
+      
+     <div class="ui fluid card" ng-repeat="stream in vm.streams">
+  		<div class="content">
+    		<div class="header">{{stream.senderID}}</div>
+    		<div class="meta">2 days ago</div>
+    		<div class="description">
+      			{{stream.message}}
+      			
+    		</div>
+  		</div>
+	</div>
+
+ 
+
+      
+    </div>
+     
+ <div class="ui left action input fluid">
+  <button class="ui teal icon button">
+    <i class="add icon"></i>
+  </button>
+  <input type="text" value="">
+</div>
+
+    
+  </div>
+  </div>
+</div>
