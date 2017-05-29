@@ -1,6 +1,7 @@
 package com.stackroute.activity.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,9 +37,10 @@ public class Stream extends BaseDomain{
 		this.receiverID = receiverID;
 	}
 
+	/*
+	@Transient*/
 	@Column(name="posted_date")
-	@Transient
-	private Date postedDate;
+	private Timestamp postedDate;
 	
 	@Column(name="stream_type")
 	private String streamType;
@@ -74,14 +76,19 @@ public class Stream extends BaseDomain{
 		this.senderID = senderID;
 	}
 
-	public Date getPostedDate() {
+	public Timestamp getPostedDate() {
 		return postedDate;
 	}
 
-	public void setPostedDate(Date postedDate) {
+	public void setPostedDate(Timestamp postedDate) {
 		this.postedDate = postedDate;
 	}
 
+	public void setCurrentDate()
+	{
+		this.postedDate= new Timestamp(System.currentTimeMillis());
+	}
+	
 	public String getStreamType() {
 		return streamType;
 	}

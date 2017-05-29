@@ -50,7 +50,8 @@ public class StreamDAOImpl implements StreamDAO{
 
 	public boolean sendMessageToCircle(String circleName, Stream stream) {
 		try {
-			
+		
+			stream.setCurrentDate();
 			stream.setId((int)( Math.random()*1000000));
 			getCurrentSession().save(stream);
 			StreamCircle streamCircle = new StreamCircle();

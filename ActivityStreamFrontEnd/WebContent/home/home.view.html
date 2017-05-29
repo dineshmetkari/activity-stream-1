@@ -1,0 +1,71 @@
+<div class="ui bottom attached segment pushable homepage">
+  <div class="ui visible inverted left vertical sidebar menu">
+  
+  <a class="item">
+      Hi {{vm.user.id}}!!
+    </a>
+  
+    <a class="item">
+      <i class="folder open icon"></i>
+      Home
+    </a>
+    <a class="item" ng-repeat="circle in vm.circles" ng-click="vm.selectCircle(circle)">
+      <i class="circle thin icon"></i>
+      {{circle}}
+    </a>
+   
+  </div>
+  
+  <div class="pusher">
+  <div class="ui fluid container">
+    <div class="ui fluid basic segment">
+      <div class="ui secondary menu">
+  		<a class="item active">
+    	Circles
+  		</a>
+  <a class="item">
+    Messages
+  </a>
+  <a class="item">
+    Friends
+  </a>
+  	<div class="menu">
+    <div class="item">
+      <div class="ui icon input">
+        <input type="text" placeholder="Search...">
+        <i class="search link icon"></i>
+      </div>
+    </div>
+    <a class="ui item" ng-click="vm.logout()">
+      Logout
+    </a>
+  </div>
+</div>
+      
+     <div class="ui fluid card" ng-repeat="stream in vm.streams | orderBy: 'stream.postedDate':true">
+  		<div class="content">
+    		<div class="header">{{stream.senderID}}</div>
+    		<div class="meta">{{stream.postedDate | date : 'MMMM dd, yyyy hh:mm:ss'}}</div>
+    		<div class="description">
+      			{{stream.message}}
+      			
+    		</div>
+  		</div>
+	</div>
+
+ 
+
+      
+    </div>
+     
+ <div class="ui left action input fluid">
+  <button class="ui teal icon button">
+    <i class="add icon"></i>
+  </button>
+  <input type="text" value="" ng-model="vm.stream.message" ng-keypress="$event.keyCode === 13 && vm.send()">
+</div>
+
+    
+  </div>
+  </div>
+</div>
