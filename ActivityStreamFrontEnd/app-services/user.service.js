@@ -38,7 +38,7 @@
         
         
         function Logout(id) {
-            return $http.put('http://localhost:10080/angularauth-rest/user/logout').then(handleSuccess, handleError('Error Logging out'));
+            return $http.put('http://localhost:8080/ActivityRestService/user/logout').then(handleSuccess, handleError('Error Logging out'));
         }
         
         function GetCirclesById(id) {

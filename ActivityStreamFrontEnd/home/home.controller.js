@@ -5,17 +5,19 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope','$location'];
-    function HomeController(UserService, $rootScope,$location) {
+    HomeController.$inject = ['UserService','StreamService', '$rootScope','$location'];
+    function HomeController(UserService, StreamService, $rootScope,$location) {
         var vm = this;
         console.log('username in HomeController:'+$rootScope.currentUser);
         vm.user = null;
         vm.selectedCircle=null;
+        vm.stream=null;
         vm.circles=[];
         vm.streams=[];
         vm.allUsers = [];
         vm.logout=logout;
         vm.selectCircle=selectCircle;
+        vm.send=send;
         
         initController();
 
@@ -70,11 +72,29 @@
         }
 
         
-        function logout(id) {
-            UserService.Logout(id)
+        function logout() {
+            UserService.Logout()
             .then(function () {
+            	alert('you have successfully logged out');
                 $location.path("/login");
             });
+        }
+        
+        function postToCircle(stream,circle) {
+            StreamService.postToCircle(stream,circle)
+            .then(function () {
+            	loadStreamByCircle();
+            	vm.stream.message="";
+            });
+        }
+        
+        function send() {
+        	console.log($rootScope.currentUser.id);
+        	vm.stream.senderID=$rootScope.currentUser.id;
+        	vm.stream.streamType='String';
+        	vm.stream.tag=vm.selectedCircle;
+        	postToCircle(vm.stream,vm.selectedCircle);
+        	
         }
     }
 
