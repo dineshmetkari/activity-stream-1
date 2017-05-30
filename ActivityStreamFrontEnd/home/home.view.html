@@ -42,7 +42,7 @@
   </div>
 </div>
       
-     <div class="ui fluid card" ng-repeat="stream in vm.streams | orderBy: 'stream.postedDate':true">
+     <div class="ui fluid card" ng-repeat="stream in vm.streams | orderBy : 'postedDate' : false">
   		<div class="content">
     		<div class="header">{{stream.senderID}}</div>
     		<div class="meta">{{stream.postedDate | date : 'MMMM dd, yyyy hh:mm:ss'}}</div>

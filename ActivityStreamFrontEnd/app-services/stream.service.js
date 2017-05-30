@@ -5,7 +5,7 @@
         .module('app')
         .factory('StreamService', StreamService);
 
-    UserService.$inject = ['$http'];
+    StreamService.$inject = ['$http'];
     function StreamService($http) {
         var service = {};
 
