@@ -1,0 +1,37 @@
+<div class="ui visible inverted left vertical sidebar menu">
+  
+  <a class="item">
+      Hi {{vm.user.id}}!!
+    </a>
+  
+  <h4 class="ui horizontal inverted divider">
+    CIRCLES
+  </h4>
+  
+    <a class="item">
+      <i class="folder open icon"></i>
+      Home
+    </a>
+    <a class="item" ng-repeat="circle in vm.circles" ng-click="vm.selectCircle(circle)">
+      <i class="circle thin icon"></i>
+      {{circle}}
+    </a>
+ 
+<h4 class="ui horizontal inverted divider">
+    USERS
+  </h4>
+<div class="ui inverted fluid category search">
+  <div class="ui icon input">
+    <input class="prompt" type="text" ng-model="searchUser" placeholder="Search users...">
+    <i class="search icon"></i>
+  </div>
+  <div class="results"></div>
+</div>
+  <div class="ui secondary vertical pointing menu">
+  <a class="item" ng-repeat="user in vm.allUsers | filter : searchUser |limitTo : 3">
+    {{user.id}}
+  </a>
+  
+</div>
+   
+  </div>

@@ -18,6 +18,7 @@
         service.Logout=Logout;
         service.GetCirclesById=GetCirclesById;
         service.GetStreamByCircleId=GetStreamByCircleId;
+        service.GetAllUsers=GetAllUsers;
         
         return service;
 
@@ -47,6 +48,11 @@
         
         function GetStreamByCircleId(id) {
             return $http.get('http://localhost:8080/ActivityRestService/stream/getMessagesByCircle/' + id).then(handleSuccess, handleError('Error getting circles by id'));
+        }
+        
+        
+        function GetAllUsers() {
+            return $http.get('http://localhost:8080/ActivityRestService/user/').then(handleSuccess, handleError('Error getting list of users'));
         }
 
         // private functions

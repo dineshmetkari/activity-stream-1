@@ -1,11 +1,21 @@
 <div class="ui bottom attached segment pushable homepage">
+
+
   <div class="ui visible inverted left vertical sidebar menu">
   
   <a class="item">
       Hi {{vm.user.id}}!!
     </a>
-  
-    <a class="item">
+<button class="circular ui icon center aligned button" id="addCircleAction">
+				<i class="add circle icon"></i>
+			</button>
+		<h4 class="ui horizontal inverted divider">
+			CIRCLES
+			
+			
+		</h4>
+		
+		<a class="item">
       <i class="folder open icon"></i>
       Home
     </a>
@@ -13,8 +23,27 @@
       <i class="circle thin icon"></i>
       {{circle}}
     </a>
+ 
+<h4 class="ui horizontal inverted divider">
+    USERS
+  </h4>
+<div class="ui inverted fluid category search">
+  <div class="ui icon input">
+    <input class="prompt" type="text" ng-model="searchUser" placeholder="Search users...">
+    <i class="search icon"></i>
+  </div>
+  <div class="results"></div>
+</div>
+  <div class="ui secondary vertical pointing menu">
+  <a class="item" ng-repeat="user in vm.allUsers | filter : searchUser |limitTo : 3">
+    {{user.id}}
+  </a>
+  
+</div>
    
   </div>
+  
+ 
   
   <div class="pusher">
   <div class="ui fluid container">
@@ -69,3 +98,34 @@
   </div>
   </div>
 </div>
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Add a Circle
+  </div>
+   <div class="content">
+    <div class="ui input focus">
+  <input type="text" placeholder="Circle Name......" ng-model="vm.circle.id">
+</div>
+  </div>
+  <div class="actions">
+    
+    <div class="ui positive right labeled icon button" ng-click="vm.createCircle()">
+      Create Circle
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#addCircleAction").click(function(){
+    	$('.ui.modal')
+    	  .modal('show')
+    	;
+    });
+});
+</script>
+
+

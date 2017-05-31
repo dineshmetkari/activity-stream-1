@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService','StreamService', '$rootScope','$location'];
-    function HomeController(UserService, StreamService, $rootScope,$location) {
+    HomeController.$inject = ['UserService','StreamService', 'CircleService','$rootScope','$location'];
+    function HomeController(UserService, StreamService, CircleService, $rootScope,$location) {
         var vm = this;
         console.log('username in HomeController:'+$rootScope.currentUser);
         vm.user = null;
@@ -18,6 +18,8 @@
         vm.logout=logout;
         vm.selectCircle=selectCircle;
         vm.send=send;
+        vm.createCircle=createCircle;
+        vm.circle=null;
         
         initController();
 
@@ -25,6 +27,7 @@
             loadCurrentUser();
             loadCirclesForCurrentUser();
             loadStreamByCircle();
+            loadAllUsers();
             
         }
 
@@ -41,6 +44,16 @@
             UserService.GetCirclesById($rootScope.currentUser.id)
                 .then(function (circles) {
                     vm.circles = circles;
+                    
+                });
+        }
+        
+        
+        function loadAllUsers() {
+        	console.log('inside loadAllUsers function')
+            UserService.GetAllUsers()
+                .then(function (users) {
+                    vm.allUsers = users;
                     
                 });
         }
@@ -64,12 +77,7 @@
         	
         }
         
-        function loadAllUsers() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
-                });
-        }
+        
 
         
         function logout() {
@@ -96,6 +104,18 @@
         	postToCircle(vm.stream,vm.selectedCircle);
         	
         }
+        
+        function createCircle() {
+        	vm.circle.name=vm.circle.id;
+        	vm.circle.adminID=$rootScope.currentUser.id;
+        	CircleService.CreateCircle(vm.circle)
+            .then(function () {
+            	alert('New Circle created with name:'+vm.circle.name);
+                
+            });
+        }
+        
+        
     }
 
 })();
