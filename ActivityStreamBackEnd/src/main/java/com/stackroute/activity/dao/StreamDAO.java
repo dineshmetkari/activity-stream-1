@@ -10,6 +10,8 @@ public interface StreamDAO {
 	
 	public List<Stream> getMessagesFromCircle(String circleName); 
 	
+	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId);
+	
 	public List<Stream> getMessages(String userID); 
 	
 	public boolean sendMessageToCircle(String circleName,Stream stream);

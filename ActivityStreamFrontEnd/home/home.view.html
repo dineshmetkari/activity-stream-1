@@ -4,13 +4,13 @@
 	<div class="ui visible inverted left vertical sidebar menu">
 
 		<a class="item"> Hi {{vm.user.id}}!! </a>
-		<button class="circular ui icon button" id="addCircleAction">
-			<i class="add circle icon"></i>
-		</button>
-		<button class="circular ui icon button" id="searchCircleAction">
-			<i class="search icon"></i>
-		</button>
-		<h4 class="ui horizontal inverted divider">CIRCLES</h4>
+		
+		
+		<h4 class="ui horizontal inverted divider">My Circles
+		<a class="ui white  icon" id="addCircleAction">
+			<i class="add large circle icon"></i>
+		</a>
+		</h4>
 
 		<a class="item"> <i class="folder open icon"></i> Home
 		</a> <a class="item" ng-repeat="circle in vm.circles"
@@ -18,8 +18,8 @@
 			{{circle}}
 		</a>
 
-		<h4 class="ui horizontal inverted divider">USERS</h4>
-		<div class="ui inverted fluid category search">
+		<h4 class="ui horizontal inverted divider">Direct Messages</h4>
+		<!-- <div class="ui inverted fluid category search">
 			<div class="ui icon input">
 				<input class="prompt" type="text" ng-model="searchUser"
 					placeholder="Search users..."> <i class="search icon"></i>
@@ -31,9 +31,17 @@
 				ng-repeat="user in vm.allUsers | filter : searchUser |limitTo : 3">
 				{{user.id}} </a>
 
+		</div> -->
+
+<div class="ui secondary vertical pointing menu">
+			<a class="item"
+				ng-repeat="user in vm.recentUsers | filter : searchUser |limitTo : 3" ng-click="vm.selectUser(user)">
+				{{user}} </a>
+
 		</div>
 
 	</div>
+	
 
 
 
@@ -41,8 +49,9 @@
 		<div class="ui fluid container">
 			<div class="ui fluid basic segment">
 				<div class="ui secondary menu">
-					<a class="item active"> Circles </a> <a class="item"> Messages
-					</a> <a class="item"> Friends </a>
+					<a class="item active" id="searchCircleAction"> Circles </a>
+					<a class="item" id="searchUserAction"> Users</a> 
+					<a class="item"> Tags </a>
 					<div class="menu">
 						<div class="item">
 							<div class="ui icon input">
@@ -138,6 +147,42 @@
 	</div>
 </div>
 
+<div class="ui small modal" id="searchUserModal">
+	<i class="close icon"></i>
+	<div class="header">Search Users</div>
+	<div class="content">
+
+		<div class="ui floating dropdown labeled icon button">
+			<i class="filter icon"></i> <span class="text">List of Users</span>
+			<div class="menu">
+				<div class="ui icon search input">
+					<i class="search icon"></i> <input type="text"
+						placeholder="Search User...">
+				</div>
+				<div class="divider"></div>
+
+				<div class="scrolling menu">
+					
+					
+					<div class="item" ng-repeat="user in vm.allUsers | orderBy: id" ng-click="vm.showUserDetails(user)">
+						
+						{{user.id}}
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+	<div class="actions">
+
+<div class="ui buttons" ng-show="vm.selectedUser">
+  <button class="ui positive button" ng-click="vm.startPrivateMessage()">Message</button>
+</div>
+	</div>
+</div>
+
 <script>
 $(document).ready(function(){
     $("#addCircleAction").click(function(){
@@ -148,6 +193,12 @@ $(document).ready(function(){
     
     $("#searchCircleAction").click(function(){
     	$('#searchCircleModal')
+    	  .modal('show')
+    	;
+    });
+    
+    $("#searchUserAction").click(function(){
+    	$('#searchUserModal')
     	  .modal('show')
     	;
     });

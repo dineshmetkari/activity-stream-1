@@ -11,7 +11,7 @@
 
         
         service.postToCircle = postToCircle;
-           
+        service.postToUser = postToUser;   
         return service;
 
         
@@ -21,6 +21,11 @@
         function postToCircle(stream,circleName) {
         	console.log(stream);
             return $http.post('http://localhost:8080/ActivityRestService/stream/sendMessageToCircle/' + circleName,stream).then(handleSuccess, handleError('Error posting message to circle'));
+        }
+        
+        function postToUser(stream) {
+        	console.log(stream);
+            return $http.post('http://localhost:8080/ActivityRestService/stream/sendMessageToUser/',stream).then(handleSuccess, handleError('Error posting message to circle'));
         }
 
        

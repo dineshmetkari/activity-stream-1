@@ -73,6 +73,7 @@ public class StreamDAOImpl implements StreamDAO{
 
 	public boolean sendMessageToUser(String receiverID, Stream stream) {
 		try {
+			stream.setCurrentDate();
 			stream.setReceiverID(receiverID);
 			stream.setId((int)(Math.random()*10000));
 			getCurrentSession().save(stream);
@@ -116,6 +117,19 @@ public class StreamDAOImpl implements StreamDAO{
 		
 		return getCurrentSession().createQuery("from Stream where id in (select streamID from StreamCircle where circleID=?)")
 		.setString(0, circleID).list();
+
+	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId) {
+		
+		return getCurrentSession().createQuery("from UserStream where (userID=? and senderID=?) or (userID=? and senderID=?)")
+		.setString(0, userId)
+		.setString(1, otherUserId)
+		.setString(2, otherUserId)
+		.setString(3, userId)
+		.list();
 
 	
 	}

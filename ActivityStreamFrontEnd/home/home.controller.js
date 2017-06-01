@@ -10,22 +10,28 @@
         var vm = this;
         console.log('username in HomeController:'+$rootScope.currentUser);
         vm.user = null;
+        vm.selectedUser=null;
         vm.selectedCircle=null;
         vm.stream=null;
+        vm.circle=null;
+        vm.currentCircle=null;
+        vm.circleJoinStatus=null;
         vm.circles=[];
         vm.streams=[];
         vm.allUsers = [];
         vm.allCircles=[];
+        vm.recentUsers=[];
         vm.logout=logout;
         vm.selectCircle=selectCircle;
+        vm.selectUser=selectUser;
         vm.send=send;
         vm.createCircle=createCircle;
-        vm.circle=null;
-        vm.currentCircle=null;
         vm.showCircleDetails=showCircleDetails;
-        vm.circleJoinStatus=null;
         vm.joinCircle=joinCircle;
         vm.leaveCircle=leaveCircle;
+        vm.startPrivateMessage=startPrivateMessage;
+        vm.showUserDetails=showUserDetails;
+        vm.userCircleFlag=null;
         
         initController();
 
@@ -86,13 +92,32 @@
         }
         
         
+        function loadStreamByUser() {
+        	console.log('inside loadStreamByUser function:'+vm.selectedUser)
+            UserService.GetStreamByUserId($rootScope.currentUser.id,vm.selectedUser)
+                .then(function (streams) {
+                	console.log(streams);
+                    vm.streams = streams;
+                    
+                });
+        }
+        
         function selectCircle(id) {
         	console.log(id);
+        	vm.userCircleFlag='circle';
         	vm.selectedCircle=id;
         	loadStreamByCircle();
         	
         }
         
+        
+        function selectUser(id) {
+        	console.log(id);
+        	vm.selectedUser=id;
+        	vm.userCircleFlag='user';
+        	loadStreamByUser();
+        	
+        }
         function showCircleDetails(circle) {
         	console.log("showcircle method:"+circle.id);
         	vm.currentCircle=circle;
@@ -107,6 +132,18 @@
         	
         	    vm.circleJoinStatus=containsAny(circle.id,vm.circles);
         	    console.log("Circle Join Status"+vm.circleJoinStatus);
+        	    
+        	
+
+        	
+        }
+        
+        function showUserDetails(user) {
+        	console.log("showUser method:"+user.id);
+        	vm.selectedUser=user.id;
+        	   
+        	
+        	   
         	    
         	
 
@@ -141,6 +178,14 @@
             });
         }
         
+        function postToUser(stream) {
+            StreamService.postToUser(stream)
+            .then(function () {
+            	loadStreamByUser();
+            	vm.stream.message="";
+            });
+        }
+        
         function joinCircle() {
         	console.log('join circle function called');
             CircleService.JoinCircle($rootScope.currentUser.id,vm.currentCircle.id)
@@ -163,8 +208,17 @@
         	console.log($rootScope.currentUser.id);
         	vm.stream.senderID=$rootScope.currentUser.id;
         	vm.stream.streamType='String';
-        	vm.stream.tag=vm.selectedCircle;
-        	postToCircle(vm.stream,vm.selectedCircle);
+        	
+        	if(vm.userCircleFlag=='circle'){
+        		vm.stream.tag=vm.selectedCircle;
+        		postToCircle(vm.stream,vm.selectedCircle);
+        	}
+        	else
+        	{
+        		vm.stream.tag='private';
+        		vm.stream.receiverID=vm.selectedUser;
+        		postToUser(vm.stream);	
+        	}
         	
         }
         
@@ -176,6 +230,13 @@
             	alert('New Circle created with name:'+vm.circle.name);
                 
             });
+        }
+        
+        function startPrivateMessage(){
+        	
+        	vm.userCircleFlag='user';
+        	vm.recentUsers.push(vm.selectedUser);
+        	loadStreamByUser();
         }
         
         

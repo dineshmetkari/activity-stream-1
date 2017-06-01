@@ -95,10 +95,10 @@ public class StreamRestController {
 	
 
 //---------------------Get Messages by User----------------------------------
-	@GetMapping("/stream/getMessagesByUser/{userId}")
-	public List<Stream> getMessagesByUser(@PathVariable("userId") String userId){
+	@GetMapping("/stream/getMessagesByUser/{userId}/{otherUserId}")
+	public List<Stream> getMessagesByUser(@PathVariable("userId") String userId,@PathVariable("otherUserId") String otherUserId){
 		
-		return streamDAO.getMessages(userId);
+		return streamDAO.getMessagesFromUserHome(userId,otherUserId);
 		
 	}
 
