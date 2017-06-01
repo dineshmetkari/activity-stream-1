@@ -1,130 +1,160 @@
 <div class="ui bottom attached segment pushable homepage">
 
 
-  <div class="ui visible inverted left vertical sidebar menu">
-  
-  <a class="item">
-      Hi {{vm.user.id}}!!
-    </a>
-<button class="circular ui icon center aligned button" id="addCircleAction">
-				<i class="add circle icon"></i>
-			</button>
-		<h4 class="ui horizontal inverted divider">
-			CIRCLES
-			
-			
-		</h4>
-		
-		<a class="item">
-      <i class="folder open icon"></i>
-      Home
-    </a>
-    <a class="item" ng-repeat="circle in vm.circles" ng-click="vm.selectCircle(circle)">
-      <i class="circle thin icon"></i>
-      {{circle}}
-    </a>
- 
-<h4 class="ui horizontal inverted divider">
-    USERS
-  </h4>
-<div class="ui inverted fluid category search">
-  <div class="ui icon input">
-    <input class="prompt" type="text" ng-model="searchUser" placeholder="Search users...">
-    <i class="search icon"></i>
-  </div>
-  <div class="results"></div>
-</div>
-  <div class="ui secondary vertical pointing menu">
-  <a class="item" ng-repeat="user in vm.allUsers | filter : searchUser |limitTo : 3">
-    {{user.id}}
-  </a>
-  
-</div>
-   
-  </div>
-  
- 
-  
-  <div class="pusher">
-  <div class="ui fluid container">
-    <div class="ui fluid basic segment">
-      <div class="ui secondary menu">
-  		<a class="item active">
-    	Circles
-  		</a>
-  <a class="item">
-    Messages
-  </a>
-  <a class="item">
-    Friends
-  </a>
-  	<div class="menu">
-    <div class="item">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
-      </div>
-    </div>
-    <a class="ui item" ng-click="vm.logout()">
-      Logout
-    </a>
-  </div>
-</div>
-      
-     <div class="ui fluid card" ng-repeat="stream in vm.streams | orderBy : 'postedDate' : false">
-  		<div class="content">
-    		<div class="header">{{stream.senderID}}</div>
-    		<div class="meta">{{stream.postedDate | date : 'MMMM dd, yyyy hh:mm:ss'}}</div>
-    		<div class="description">
-      			{{stream.message}}
-      			
-    		</div>
-  		</div>
+	<div class="ui visible inverted left vertical sidebar menu">
+
+		<a class="item"> Hi {{vm.user.id}}!! </a>
+		<button class="circular ui icon button" id="addCircleAction">
+			<i class="add circle icon"></i>
+		</button>
+		<button class="circular ui icon button" id="searchCircleAction">
+			<i class="search icon"></i>
+		</button>
+		<h4 class="ui horizontal inverted divider">CIRCLES</h4>
+
+		<a class="item"> <i class="folder open icon"></i> Home
+		</a> <a class="item" ng-repeat="circle in vm.circles"
+			ng-click="vm.selectCircle(circle)"> <i class="circle thin icon"></i>
+			{{circle}}
+		</a>
+
+		<h4 class="ui horizontal inverted divider">USERS</h4>
+		<div class="ui inverted fluid category search">
+			<div class="ui icon input">
+				<input class="prompt" type="text" ng-model="searchUser"
+					placeholder="Search users..."> <i class="search icon"></i>
+			</div>
+			<div class="results"></div>
+		</div>
+		<div class="ui secondary vertical pointing menu">
+			<a class="item"
+				ng-repeat="user in vm.allUsers | filter : searchUser |limitTo : 3">
+				{{user.id}} </a>
+
+		</div>
+
 	</div>
 
- 
 
-      
-    </div>
-     
- <div class="ui left action input fluid">
-  <button class="ui teal icon button">
-    <i class="add icon"></i>
-  </button>
-  <input type="text" value="" ng-model="vm.stream.message" ng-keypress="$event.keyCode === 13 && vm.send()">
+
+	<div class="pusher">
+		<div class="ui fluid container">
+			<div class="ui fluid basic segment">
+				<div class="ui secondary menu">
+					<a class="item active"> Circles </a> <a class="item"> Messages
+					</a> <a class="item"> Friends </a>
+					<div class="menu">
+						<div class="item">
+							<div class="ui icon input">
+								<input type="text" placeholder="Search..."> <i
+									class="search link icon"></i>
+							</div>
+						</div>
+						<a class="ui item" ng-click="vm.logout()"> Logout </a>
+					</div>
+				</div>
+
+				<div class="ui fluid card"
+					ng-repeat="stream in vm.streams | orderBy : 'postedDate' : false">
+					<div class="content">
+						<div class="header">{{stream.senderID}}</div>
+						<div class="meta">{{stream.postedDate | date : 'MMMM dd,
+							yyyy hh:mm:ss'}}</div>
+						<div class="description">{{stream.message}}</div>
+					</div>
+				</div>
+
+
+
+
+			</div>
+
+			<div class="ui left action input fluid">
+				<button class="ui teal icon button">
+					<i class="add icon"></i>
+				</button>
+				<input type="text" value="" ng-model="vm.stream.message"
+					ng-keypress="$event.keyCode === 13 && vm.send()">
+			</div>
+
+
+		</div>
+	</div>
 </div>
 
-    
-  </div>
-  </div>
+<div class="ui modal" id="createCircleModal">
+	<i class="close icon"></i>
+	<div class="header">Add a Circle</div>
+	<div class="content">
+		<div class="ui input focus">
+			<input type="text" placeholder="Circle Name......"
+				ng-model="vm.circle.id">
+		</div>
+	</div>
+	<div class="actions">
+
+		<div class="ui positive right labeled icon button"
+			ng-click="vm.createCircle()">
+			Create Circle <i class="checkmark icon"></i>
+		</div>
+	</div>
 </div>
 
-<div class="ui modal">
-  <i class="close icon"></i>
-  <div class="header">
-    Add a Circle
-  </div>
-   <div class="content">
-    <div class="ui input focus">
-  <input type="text" placeholder="Circle Name......" ng-model="vm.circle.id">
+
+<div class="ui small modal" id="searchCircleModal">
+	<i class="close icon"></i>
+	<div class="header">Search Available Circles</div>
+	<div class="content">
+
+		<div class="ui floating dropdown labeled icon button">
+			<i class="filter icon"></i> <span class="text">List of Circles</span>
+			<div class="menu">
+				<div class="ui icon search input">
+					<i class="search icon"></i> <input type="text"
+						placeholder="Search circle...">
+				</div>
+				<div class="divider"></div>
+
+				<div class="scrolling menu">
+					
+					
+					<div class="item" ng-repeat="circle in vm.allCircles | orderBy: id" ng-click="vm.showCircleDetails(circle)">
+						
+						{{circle.id}}
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+	<div class="actions">
+
+		<div class="ui buttons" ng-show="vm.currentCircle">
+  <button class="ui button" ng-disabled="!vm.circleJoinStatus" ng-click="vm.leaveCircle()">Leave Circle</button>
+  <button class="ui positive button" ng-disabled="vm.circleJoinStatus" ng-click="vm.joinCircle()">Join Circle</button>
 </div>
-  </div>
-  <div class="actions">
-    
-    <div class="ui positive right labeled icon button" ng-click="vm.createCircle()">
-      Create Circle
-      <i class="checkmark icon"></i>
-    </div>
-  </div>
+	</div>
 </div>
 
 <script>
 $(document).ready(function(){
     $("#addCircleAction").click(function(){
-    	$('.ui.modal')
+    	$('#createCircleModal')
     	  .modal('show')
     	;
     });
+    
+    $("#searchCircleAction").click(function(){
+    	$('#searchCircleModal')
+    	  .modal('show')
+    	;
+    });
+    
+    $('.ui.dropdown')
+    .dropdown()
+  ;
 });
 </script>
 

@@ -15,11 +15,17 @@
         vm.circles=[];
         vm.streams=[];
         vm.allUsers = [];
+        vm.allCircles=[];
         vm.logout=logout;
         vm.selectCircle=selectCircle;
         vm.send=send;
         vm.createCircle=createCircle;
         vm.circle=null;
+        vm.currentCircle=null;
+        vm.showCircleDetails=showCircleDetails;
+        vm.circleJoinStatus=null;
+        vm.joinCircle=joinCircle;
+        vm.leaveCircle=leaveCircle;
         
         initController();
 
@@ -28,6 +34,7 @@
             loadCirclesForCurrentUser();
             loadStreamByCircle();
             loadAllUsers();
+            loadAllCircles();
             
         }
 
@@ -57,6 +64,15 @@
                     
                 });
         }
+        
+        function loadAllCircles() {
+        	console.log('inside loadAllCircles function')
+            CircleService.GetAllCircles()
+                .then(function (circles) {
+                    vm.allCircles = circles;
+                    
+                });
+        }
 
         
         function loadStreamByCircle() {
@@ -77,7 +93,36 @@
         	
         }
         
+        function showCircleDetails(circle) {
+        	console.log("showcircle method:"+circle.id);
+        	vm.currentCircle=circle;
+        	var circleId=circle.id;
+        	    /*for (var i = 0; i != vm.circles.length; i++) {
+        	       var substring = vm.circles[i];
+        	       if (circleId.indexOf(substring) != - 1) {
+        	         vm.circleJoinStatus=true;
+        	       }
+        	      
+        	    }*/
+        	
+        	    vm.circleJoinStatus=containsAny(circle.id,vm.circles);
+        	    console.log("Circle Join Status"+vm.circleJoinStatus);
+        	    
+        	
+
+        	
+        }
         
+        
+        function containsAny(str, substrings) {
+            for (var i = 0; i != substrings.length; i++) {
+               var substring = substrings[i];
+               if (str.indexOf(substring) != - 1) {
+                 return substring;
+               }
+            }
+            return null; 
+        }
 
         
         function logout() {
@@ -93,6 +138,24 @@
             .then(function () {
             	loadStreamByCircle();
             	vm.stream.message="";
+            });
+        }
+        
+        function joinCircle() {
+        	console.log('join circle function called');
+            CircleService.JoinCircle($rootScope.currentUser.id,vm.currentCircle.id)
+            .then(function () {
+            	alert('you have successfully joined this circle');
+            	loadCirclesForCurrentUser();
+            });
+        }
+        
+        function leaveCircle() {
+        	console.log('leave circle function called');
+            CircleService.LeaveCircle($rootScope.currentUser.id,vm.currentCircle.id)
+            .then(function () {
+            	alert('you have successfully left the circle');
+            	loadCirclesForCurrentUser();
             });
         }
         
