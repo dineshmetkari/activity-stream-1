@@ -72,6 +72,7 @@
 						<div class="meta">{{stream.postedDate | date : 'MMMM dd,
 							yyyy hh:mm:ss'}}</div>
 						<div class="description">{{stream.message}}</div>
+						<a class="ui teal tag label" ng-repeat="tag in stream.tag track by $index">{{tag}}</a>
 					</div>
 				</div>
 

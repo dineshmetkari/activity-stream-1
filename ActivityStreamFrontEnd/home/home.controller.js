@@ -85,6 +85,13 @@
         	console.log('inside loadStreamByCircle function:'+vm.selectedCircle)
             UserService.GetStreamByCircleId(vm.selectedCircle)
                 .then(function (streams) {
+                	var arrayLength = streams.length;
+                	for (var i = 0; i < arrayLength; i++) {
+                	    //alert(streams[i].tag);
+                		var tagArr=streams[i].tag.split(',');
+                	    console.log("tagArr"+tagArr);
+                	    streams[i].tag=tagArr;
+                	}
                 	console.log(streams);
                     vm.streams = streams;
                     
@@ -96,6 +103,13 @@
         	console.log('inside loadStreamByUser function:'+vm.selectedUser)
             UserService.GetStreamByUserId($rootScope.currentUser.id,vm.selectedUser)
                 .then(function (streams) {
+                	var arrayLength = streams.length;
+                	for (var i = 0; i < arrayLength; i++) {
+                	    //alert(streams[i].tag);
+                		var tagArr=streams[i].tag.split(',');
+                	    console.log("tagArr"+tagArr);
+                	    streams[i].tag=tagArr;
+                	}
                 	console.log(streams);
                     vm.streams = streams;
                     
