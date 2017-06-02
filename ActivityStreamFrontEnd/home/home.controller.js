@@ -20,6 +20,7 @@
         vm.streams=[];
         vm.allUsers = [];
         vm.allCircles=[];
+        vm.allTags=[];
         vm.recentUsers=[];
         vm.logout=logout;
         vm.selectCircle=selectCircle;
@@ -41,6 +42,7 @@
             loadStreamByCircle();
             loadAllUsers();
             loadAllCircles();
+            loadAllTags();
             
         }
 
@@ -220,12 +222,12 @@
         
         function send() {
         	var message=vm.stream.message;
-        	var tags=message.match(/#\w+/g);
+        	var tags=(message.match(/#\w+/g));
         	console.log('tags found-->'+tags);
         	console.log($rootScope.currentUser.id);
         	vm.stream.senderID=$rootScope.currentUser.id;
         	vm.stream.streamType='String';
-        	vm.stream.tag=( typeof tags != 'undefined' && tags instanceof Array ) ? tags.toString() : 'No Tags';
+        	vm.stream.tag=( typeof tags != 'undefined' && tags instanceof Array ) ? tags.toString().toLowerCase() : 'No Tags';
         	if(vm.userCircleFlag=='circle'){
         		
         		postToCircle(vm.stream,vm.selectedCircle);
@@ -236,6 +238,7 @@
         		vm.stream.receiverID=vm.selectedUser;
         		postToUser(vm.stream);	
         	}
+        	loadAllTags();
         	
         }
         
@@ -255,6 +258,35 @@
         	vm.recentUsers.push(vm.selectedUser);
         	loadStreamByUser();
         }
+        
+        function loadAllTags() {
+        	console.log('inside loadAllTags function:')
+            StreamService.GetAllTags()
+                .then(function (tags) {
+                	var arrayLength = tags.length;
+                	for (var i = 0; i < arrayLength; i++) {
+                	    
+                		var tagArr=tags[i].split(',');
+                	    var allTagValues=vm.allTags.concat(tagArr);
+                	    //vm.allTags=findUnique(allTagValues);
+                	    
+                	    vm.allTags= jQuery.unique(allTagValues);
+                	    
+                	}
+                	console.log(vm.allTags);
+                	
+                    
+                });
+        }
+        
+        /*function findUnique(arr) {
+            var result = [];
+            arr.forEach(function (d) {
+                if (result.indexOf(d) === -1)
+                    result.push(d);
+            });
+            return result;
+        }*/
         
         
     }

@@ -152,6 +152,10 @@ public class StreamDAOImpl implements StreamDAO{
 		return allStreams;
 	}
 
+	
+	public List<String> listTags(){
+		return getCurrentSession().createQuery("select s.tag from Stream s").list();
+	}
 
 	
 }

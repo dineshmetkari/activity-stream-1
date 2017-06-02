@@ -110,6 +110,15 @@ public class StreamRestController {
 			return streamDAO.getMessagesFromCircle(circleId);
 			
 		}	
+		
+		
+		//---------------------Get Messages by Circle--------------------------------
+		@GetMapping("/stream/getAllTags")
+		public List<String> listAllTags(){
+					
+			return streamDAO.listTags();
+					
+		}	
 	
 	
 	
