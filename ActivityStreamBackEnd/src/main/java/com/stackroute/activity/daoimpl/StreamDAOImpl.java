@@ -6,14 +6,19 @@ import java.util.SortedMap;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.stackroute.activity.dao.CircleDAO;
 import com.stackroute.activity.dao.StreamDAO;
+import com.stackroute.activity.dto.StreamAndStreamCircle;
 import com.stackroute.activity.model.Circle;
 import com.stackroute.activity.model.Stream;
 import com.stackroute.activity.model.StreamCircle;
@@ -156,6 +161,35 @@ public class StreamDAOImpl implements StreamDAO{
 	public List<String> listTags(){
 		return getCurrentSession().createQuery("select s.tag from Stream s").list();
 	}
+	
+	
+	public List<Stream> showMessagesWithTag(String tag){
+		//return getCurrentSession().createQuery("select s.senderID,s.postedDate,s.streamType,s.tag,s.message,s.receiverID,sc.circleID from Stream s inner join s.StreamCircle sc where s.id=sc.streamID").list();
+		
+		return getCurrentSession().createSQLQuery("select a.sender_id as senderID,a.posted_date as postedDate,a.stream_type as streamType,a.tag as tag,a.message as message,a.receiver_id as receiverID,b.circle_id as circleID "
+				+"from stream a join stream_circle b"
+				+" where a.tag like '%"+tag+"%' and a.receiver_id is null and"
+				+" a.id=b.stream_id"
+				+" union"
+				+" select a.sender_id,a.posted_date,a.stream_type,a.tag,a.message,a.receiver_id,null"
+				+" from stream a"
+				+" where receiver_id is not null and a.tag like '%"+tag+"%'")
+				.addScalar("senderID",StandardBasicTypes.STRING)
+				.addScalar("postedDate",StandardBasicTypes.TIMESTAMP)
+				.addScalar("streamType",StandardBasicTypes.STRING)
+				.addScalar("tag",StandardBasicTypes.STRING)
+				.addScalar("message",StandardBasicTypes.STRING)
+				.addScalar("receiverID",StandardBasicTypes.STRING)
+				.addScalar("circleID",StandardBasicTypes.STRING)
+				.setResultTransformer(Transformers.aliasToBean(StreamAndStreamCircle.class))
+				.list();
+	}
+	
+	/*select a.sender_id,a.posted_date,a.stream_type,a.tag,a.message,a.receiver_id,b.circle_id
+	from stream a join stream_circle b
+	where a.tag="angular" and a.receiver_id is null and
+	a.id=b.stream_id*/
+
 
 	
 }

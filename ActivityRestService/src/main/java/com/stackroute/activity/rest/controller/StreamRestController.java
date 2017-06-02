@@ -119,6 +119,15 @@ public class StreamRestController {
 			return streamDAO.listTags();
 					
 		}	
+		
+		
+		//---------------------Get Messages by Circle--------------------------------
+				@GetMapping("/stream/showMessagesWithTag/{tag}")
+				public List<Stream> showMessagesWithTag(@PathVariable("tag") String tag){
+							
+					return streamDAO.showMessagesWithTag(tag);
+							
+				}	
 	
 	
 	

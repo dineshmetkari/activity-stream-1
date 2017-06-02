@@ -21,5 +21,7 @@ public interface StreamDAO {
 	public boolean sendMessageToCircles(List<String> circleNames,Stream stream);
 	
 	public List<String> listTags();
+	
+	public List<Stream> showMessagesWithTag(String tag);
 
 }

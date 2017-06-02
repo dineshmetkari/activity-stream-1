@@ -12,6 +12,7 @@
         vm.user = null;
         vm.selectedUser=null;
         vm.selectedCircle=null;
+        vm.selectedTag=null;
         vm.stream=null;
         vm.circle=null;
         vm.currentCircle=null;
@@ -25,6 +26,7 @@
         vm.logout=logout;
         vm.selectCircle=selectCircle;
         vm.selectUser=selectUser;
+        vm.selectTag=selectTag;
         vm.send=send;
         vm.createCircle=createCircle;
         vm.showCircleDetails=showCircleDetails;
@@ -32,6 +34,7 @@
         vm.leaveCircle=leaveCircle;
         vm.startPrivateMessage=startPrivateMessage;
         vm.showUserDetails=showUserDetails;
+        vm.showMessagesWithTag=showMessagesWithTag;
         vm.userCircleFlag=null;
         
         initController();
@@ -134,6 +137,14 @@
         	loadStreamByUser();
         	
         }
+        
+        
+        function selectTag(tag) {
+        	console.log(tag);
+        	vm.selectedTag=tag;
+        	
+        	
+        }
         function showCircleDetails(circle) {
         	console.log("showcircle method:"+circle.id);
         	vm.currentCircle=circle;
@@ -223,6 +234,13 @@
         function send() {
         	var message=vm.stream.message;
         	var tags=(message.match(/#\w+/g));
+        	var arrayLength=tags.length;
+        	for (var i = 0; i < arrayLength; i++) {
+        	    
+        		tags[i]=tags[i].slice(1);
+        	    
+        	    
+        	}
         	console.log('tags found-->'+tags);
         	console.log($rootScope.currentUser.id);
         	vm.stream.senderID=$rootScope.currentUser.id;
@@ -230,6 +248,7 @@
         	vm.stream.tag=( typeof tags != 'undefined' && tags instanceof Array ) ? tags.toString().toLowerCase() : 'No Tags';
         	if(vm.userCircleFlag=='circle'){
         		
+        		vm.stream.receiverID=null;
         		postToCircle(vm.stream,vm.selectedCircle);
         	}
         	else
@@ -288,6 +307,21 @@
             return result;
         }*/
         
+        function showMessagesWithTag() {
+        	console.log('inside showMessagesWithTag function');
+            StreamService.ShowMessagesWithTag(vm.selectedTag)
+                .then(function(streams) {
+                	console.log('1');
+                	var arrayLength = streams.length;
+                	for (var i = 0; i < arrayLength; i++) {
+                		var tagArr=streams[i].tag.split(',');
+                	    console.log("tagArr"+tagArr);
+                	    streams[i].tag=tagArr;
+                	}
+                	console.log(streams);
+                    vm.streams = streams;
+                });
+        }
         
     }
 

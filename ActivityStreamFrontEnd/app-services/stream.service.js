@@ -13,6 +13,7 @@
         service.postToCircle = postToCircle;
         service.postToUser = postToUser;   
         service.GetAllTags=GetAllTags;
+        service.ShowMessagesWithTag=ShowMessagesWithTag;
         return service;
 
         
@@ -32,6 +33,11 @@
         function GetAllTags() {
         	
             return $http.get('http://localhost:8080/ActivityRestService/stream/getAllTags').then(handleSuccess, handleError('Error retrieving tags'));
+        }
+        
+        function ShowMessagesWithTag(tag) {
+        	
+            return $http.get('http://localhost:8080/ActivityRestService/stream/showMessagesWithTag/'+tag).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
         }
 
        

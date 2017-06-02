@@ -53,7 +53,7 @@
 		<div class="ui fluid container" id="messageArea">
 			<div class="ui fluid basic segment">
 				<div class="ui secondary menu">
-					<a class="item active" id="searchCircleAction"> Circles </a>
+					<a class="item" id="searchCircleAction"> Circles </a>
 					<a class="item" id="searchUserAction"> Users</a> 
 					<a class="item" id="searchTagAction"> Tags </a>
 					<div class="menu">
@@ -67,21 +67,26 @@
 					</div>
 				</div>
 
-			
-				
+
+
 				<div class="ui fluid card"
 					ng-repeat="stream in vm.streams | orderBy : 'postedDate' : false">
 					<div class="content">
 						<div class="header">{{stream.senderID}}</div>
-						<div class="meta">{{stream.postedDate | date : 'MMMM dd,
-							yyyy hh:mm:ss'}}</div>
+						 
+							<div class="item" ng-show="stream.circleID"> posted in
+								<div class="ui red horizontal label">{{stream.circleID}}</div>
+							</div>
+						
+						<div class="meta">{{stream.postedDate | date : 'MMMM dd, yyyy hh:mm:ss'}}</div>
 						<div class="description">{{stream.message}}</div>
-						<a class="ui teal tag label" ng-repeat="tag in stream.tag track by $index">{{tag}}</a>
+						<a class="ui teal tag label"
+							ng-repeat="tag in stream.tag track by $index" ng-click="vm.selectTag(tag);vm.showMessagesWithTag()">{{tag}}</a>
 					</div>
 				</div>
-				
 
-			
+
+
 				<div class="ui left action input fluid" id="messageInput">
 				
 				<button class="ui teal icon button" id="messageTypeAction">
@@ -219,7 +224,7 @@
 				<div class="scrolling menu">
 					
 					
-					<div class="item" ng-repeat="tag in vm.allTags">
+					<div class="item" ng-repeat="tag in vm.allTags" ng-click="vm.selectTag(tag)">
 						
 						{{tag}}
 					</div>
@@ -232,9 +237,9 @@
 	</div>
 	<div class="actions">
 
-<!-- <div class="ui buttons" ng-show="vm.selectedUser">
-  <button class="ui positive button" ng-click="vm.startPrivateMessage()">Message</button>
-</div> -->
+ <div class="ui buttons" ng-show="vm.selectedTag">
+  <button class="ui positive button" ng-click="vm.showMessagesWithTag()">Show Messages</button>
+</div>
 	</div>
 </div>
 
