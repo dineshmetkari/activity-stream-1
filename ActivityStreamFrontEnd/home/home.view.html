@@ -36,8 +36,10 @@
 <div class="ui secondary vertical pointing menu">
 			<a class="item"
 				ng-repeat="user in vm.recentUsers | filter : searchUser |limitTo : 3" ng-click="vm.selectUser(user)">
-				{{user}} </a>
-
+				{{user}} <a class="ui icon" ng-show="{{!!user}}"><i class="remove circle outline icon"></i>
+		</a></a>
+			
+			
 		</div>
 
 	</div>

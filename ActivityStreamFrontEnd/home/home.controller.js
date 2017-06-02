@@ -205,17 +205,20 @@
         }
         
         function send() {
+        	var message=vm.stream.message;
+        	var tags=message.match(/#\w+/g);
+        	console.log('tags found-->'+tags);
         	console.log($rootScope.currentUser.id);
         	vm.stream.senderID=$rootScope.currentUser.id;
         	vm.stream.streamType='String';
-        	
+        	vm.stream.tag=( typeof tags != 'undefined' && tags instanceof Array ) ? tags.toString() : 'No Tags';
         	if(vm.userCircleFlag=='circle'){
-        		vm.stream.tag=vm.selectedCircle;
+        		
         		postToCircle(vm.stream,vm.selectedCircle);
         	}
         	else
         	{
-        		vm.stream.tag='private';
+        		
         		vm.stream.receiverID=vm.selectedUser;
         		postToUser(vm.stream);	
         	}
