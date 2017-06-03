@@ -22,6 +22,8 @@ import com.stackroute.activity.dto.StreamAndStreamCircle;
 import com.stackroute.activity.model.Circle;
 import com.stackroute.activity.model.Stream;
 import com.stackroute.activity.model.StreamCircle;
+import com.stackroute.activity.model.UserCircle;
+import com.stackroute.activity.model.UserTag;
 
 @Repository("streamDAO")
 @Transactional
@@ -190,6 +192,54 @@ public class StreamDAOImpl implements StreamDAO{
 	where a.tag="angular" and a.receiver_id is null and
 	a.id=b.stream_id*/
 
+	
+public boolean subscribeUserToTag(String userID, String tag) {
+		
+		UserTag userTag = new UserTag();
+		userTag.setId((int)(Math.random()*100000));
+		userTag.setTag(tag);
+		userTag.setUserID(userID);
+		
+		try {
+			getCurrentSession().save(userTag);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	
+		
+	
+		return true;
+	}
+
+
+public boolean unsubscribeUserToTag(String userID, String tag) {
+	UserTag userTag=getUserTag(userID, tag);
+	try {
+		getCurrentSession().delete(userTag);
+	} catch (Exception e) {
+		e.printStackTrace();
+		return false;
+	}
+	
+	return true;
+}
+
+public UserTag getUserTag(String userID, String tag) {
+	return (UserTag) getCurrentSession().createQuery("from UserTag where userID= ? and tag= ?")
+			.setString(0, userID)
+			.setString(1, tag)
+			.uniqueResult();
+}
+
+
+@SuppressWarnings("unchecked")
+public List<String> listMyTags(String userID) {
+	return getCurrentSession().createQuery("select tag from UserTag where userID= ?")
+			.setString(0, userID)
+			.list();
+}
 
 	
 }

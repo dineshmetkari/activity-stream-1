@@ -19,12 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stackroute.activity.dao.StreamDAO;
 import com.stackroute.activity.model.Circle;
 import com.stackroute.activity.model.Stream;
+import com.stackroute.activity.model.UserCircle;
+import com.stackroute.activity.model.UserTag;
 
 @RestController
 public class StreamRestController {
 
 	@Autowired
 	StreamDAO streamDAO;
+	
+	@Autowired
+	UserTag userTag;
 	
 
 	
@@ -128,7 +133,57 @@ public class StreamRestController {
 					return streamDAO.showMessagesWithTag(tag);
 							
 				}	
+				
+				
+		/*----------------------Subscribe user to stream with a specific tag------------------------------------------------------------*/		
 	
 	
+				@PutMapping("/stream/subscribe/{userId}/{tag}")
+				public UserTag subscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
+					
+					boolean status=streamDAO.subscribeUserToTag(userId, tag);
+					if(status==false){
+						userTag.setErrorCode("409");
+						userTag.setErrorMessage("User could not be subscribed to tag. Either user does not exist or he is already subscribed to the specified tag");
+						
+					}
+					else
+					{
+						userTag.setErrorCode("200");
+						userTag.setErrorMessage("User subscription added successfully");
+						
+					}
+					return userTag;
+				}	
+				
+				
+				/*----------------------Unsubscribe user to stream with a specific tag------------------------------------------------------------*/		
+				
+				
+				@PutMapping("/stream/unsubscribe/{userId}/{tag}")
+				public UserTag unsubscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
+					
+					boolean status=streamDAO.unsubscribeUserToTag(userId, tag);
+					if(status==false){
+						userTag.setErrorCode("409");
+						userTag.setErrorMessage("User could not be unsubscribed to tag");
+						
+					}
+					else
+					{
+						userTag.setErrorCode("200");
+						userTag.setErrorMessage("User subscription removed successfully");
+						
+					}
+					return userTag;
+				}
 	
+				
+				//-----------------------Retrieve tags subscribed by a specific user--------------------------------	
+				@GetMapping("/tags/search/user/{userId}")
+				public List<String> getMyTags(@PathVariable("userId") String userId){
+					
+					return streamDAO.listMyTags(userId);
+					
+				}
 }

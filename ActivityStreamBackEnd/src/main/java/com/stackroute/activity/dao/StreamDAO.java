@@ -22,6 +22,14 @@ public interface StreamDAO {
 	
 	public List<String> listTags();
 	
+	public List<String> listMyTags(String userId);
+	
 	public List<Stream> showMessagesWithTag(String tag);
+	
+	public boolean subscribeUserToTag(String userID, String tag);
+	
+	public boolean unsubscribeUserToTag(String userID, String tag);
+	
+	
 
 }

@@ -20,6 +20,7 @@
         service.GetStreamByCircleId=GetStreamByCircleId;
         service.GetAllUsers=GetAllUsers;
         service.GetStreamByUserId=GetStreamByUserId;
+        service.GetSubscribedTagsById=GetSubscribedTagsById;
         
         return service;
 
@@ -60,6 +61,11 @@
             return $http.get('http://localhost:8080/ActivityRestService/user/').then(handleSuccess, handleError('Error getting list of users'));
         }
 
+        
+        function GetSubscribedTagsById(id) {
+        	console.log("Service-->GetSubscribedTagsById");
+            return $http.get('http://localhost:8080/ActivityRestService/tags/search/user/' + id).then(handleSuccess, handleError('Error getting tags by UserId'));
+        }
         // private functions
 
         function handleSuccess(res) {

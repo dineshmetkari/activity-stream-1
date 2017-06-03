@@ -17,8 +17,10 @@
         vm.circle=null;
         vm.currentCircle=null;
         vm.circleJoinStatus=null;
+        vm.tagSubscriptionStatus=null;
         vm.circles=[];
         vm.streams=[];
+        vm.tags=[];
         vm.allUsers = [];
         vm.allCircles=[];
         vm.allTags=[];
@@ -35,6 +37,9 @@
         vm.startPrivateMessage=startPrivateMessage;
         vm.showUserDetails=showUserDetails;
         vm.showMessagesWithTag=showMessagesWithTag;
+        vm.subscribeStreamWithTag=subscribeStreamWithTag;
+        vm.unsubscribeStreamWithTag=unsubscribeStreamWithTag;
+        vm.showTagDetails=showTagDetails;
         vm.userCircleFlag=null;
         
         initController();
@@ -46,6 +51,7 @@
             loadAllUsers();
             loadAllCircles();
             loadAllTags();
+            loadSubscibedTagsForCurrentUser();
             
         }
 
@@ -65,6 +71,8 @@
                     
                 });
         }
+        
+       
         
         
         function loadAllUsers() {
@@ -145,6 +153,7 @@
         	
         	
         }
+        
         function showCircleDetails(circle) {
         	console.log("showcircle method:"+circle.id);
         	vm.currentCircle=circle;
@@ -159,10 +168,18 @@
         	
         	    vm.circleJoinStatus=containsAny(circle.id,vm.circles);
         	    console.log("Circle Join Status"+vm.circleJoinStatus);
-        	    
+        	    	
+        }
+        
+        function showTagDetails(tag) {
+        	console.log("showTagDetails method:"+tag);
+        	vm.selectedTag=tag;
         	
-
+        	   
         	
+        	    vm.tagSubscriptionStatus=containsAny(tag,vm.tags);
+        	    console.log("Tag Subscription Status"+vm.tagSubscriptionStatus);
+        	    	
         }
         
         function showUserDetails(user) {
@@ -320,6 +337,35 @@
                 	}
                 	console.log(streams);
                     vm.streams = streams;
+                });
+        }
+        
+        
+        function subscribeStreamWithTag() {
+        	console.log('inside subscribeStreamWithTag function');
+            StreamService.SubscribeStreamWithTag($rootScope.currentUser.id,vm.selectedTag)
+                .then(function(streams) {
+                	alert('you have successfully subscribed to this tag');
+                	loadSubscibedTagsForCurrentUser();
+                });
+        }
+        
+        function unsubscribeStreamWithTag() {
+        	console.log('inside unsubscribeStreamWithTag function');
+            StreamService.UnsubscribeStreamWithTag($rootScope.currentUser.id,vm.selectedTag)
+                .then(function(streams) {
+                	alert('you have successfully unsubscribed to this tag');
+                	loadSubscibedTagsForCurrentUser();
+                });
+        }
+        
+        
+        function loadSubscibedTagsForCurrentUser() {
+        	console.log('inside loadSelectedTagsForCurrentUser function:'+$rootScope.currentUser.id)
+            UserService.GetSubscribedTagsById($rootScope.currentUser.id)
+                .then(function (tags) {
+                    vm.tags = tags;
+                    
                 });
         }
         

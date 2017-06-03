@@ -14,8 +14,7 @@
 		</a>
 		</h4>
 
-		<a class="item"> <i class="folder open icon"></i> Home
-		</a> <a class="item" ng-repeat="circle in vm.circles"
+	<a class="item" ng-repeat="circle in vm.circles"
 			ng-click="vm.selectCircle(circle)"> <i class="circle thin icon"></i>
 			{{circle}}
 		</a>
@@ -43,13 +42,20 @@
 			
 			
 		</div>
-
+		
+		<h4 class="ui horizontal inverted divider">Subscribed Tags <i class="tags icon"></i></h4>
+		
+		<a class="item" ng-repeat="tag in vm.tags"
+			ng-click="vm.selectTag(tag);vm.showMessagesWithTag()"> <i class="tag thin icon"></i>
+			{{tag}}
+		</a>
 	</div>
 	
 
 
 
 	<div class="pusher">
+	
 		<div class="ui fluid container" id="messageArea">
 			<div class="ui fluid basic segment">
 				<div class="ui secondary menu">
@@ -88,16 +94,24 @@
 
 
 				<div class="ui left action input fluid" id="messageInput">
-				
-				<button class="ui teal icon button" id="messageTypeAction">
-					<i class="add icon"></i>
-				</button>
-				<input type="text" value="" ng-model="vm.stream.message"
-					ng-keypress="$event.keyCode === 13 && vm.send()">
-					
-	
-			</div>
-			
+
+					<div class="ui ui teal icon top left pointing dropdown button" id="selectMessageType">
+						<i class="add icon"></i>
+						<div class="menu">
+
+							<div class="item" id="imageUploadAction">Image</div>
+							<div class="item">Attachment</div>
+
+						</div>
+					</div>
+
+
+					<input type="text" value="" ng-model="vm.stream.message"
+						ng-keypress="$event.keyCode === 13 && vm.send()">
+
+
+				</div>
+
 
 
 			</div>
@@ -107,7 +121,8 @@
 			
 
 		</div>
-	</div>
+	
+	
 </div>
 
 <div class="ui modal" id="createCircleModal">
@@ -224,7 +239,7 @@
 				<div class="scrolling menu">
 					
 					
-					<div class="item" ng-repeat="tag in vm.allTags" ng-click="vm.selectTag(tag)">
+					<div class="item" ng-repeat="tag in vm.allTags" ng-click="vm.showTagDetails(tag)">
 						
 						{{tag}}
 					</div>
@@ -238,7 +253,10 @@
 	<div class="actions">
 
  <div class="ui buttons" ng-show="vm.selectedTag">
-  <button class="ui positive button" ng-click="vm.showMessagesWithTag()">Show Messages</button>
+ 	<button class="ui positive button" ng-hide="vm.tagSubscriptionStatus" ng-click="vm.subscribeStreamWithTag()">Subscribe</button>
+ 	<button class="ui negative button" ng-show="vm.tagSubscriptionStatus" ng-click="vm.unsubscribeStreamWithTag()">Unsubscribe</button>
+ 	<div class="or"></div>
+  <button class="ui teal button" ng-click="vm.showMessagesWithTag()">Search Stream</button>
 </div>
 	</div>
 </div>
@@ -246,6 +264,32 @@
 
  
 </div>
+
+<div class="ui large modal" id="imageUploadModal">
+    <div class="header">
+      Select a Photo
+    </div>
+   
+    <div class="image content">
+      <div class="ui medium image">
+        <img src="images/rachel.png">
+      </div>
+      <div class="description">
+        <div class="ui header">Upload Photo</div>
+        <p>We've found the following <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your e-mail address.</p>
+        <p>Is it okay to use this photo?</p>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <div class="ui black deny button">
+        Cancel
+      </div>
+      <div class="ui positive right labeled icon button">
+        Post
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
 
 <script>
 $(document).ready(function(){
@@ -273,17 +317,29 @@ $(document).ready(function(){
     	;
     });
     
+    $("#imageUploadAction").click(function(){
+    	$('#imageUploadModal')
+    	.modal({
+    		blurring: true
+  		})
+    	  .modal('show')
+    	;
+    });
+    
     $('#addCircleAction')
     .popup({
       
     });
     
     
-    
-    
-    
     $('.ui.dropdown')
     .dropdown()
+  ;
+    
+    $('#selectMessageType')
+    .dropdown({
+    	direction : 'upward'
+    })
   ;
     
     

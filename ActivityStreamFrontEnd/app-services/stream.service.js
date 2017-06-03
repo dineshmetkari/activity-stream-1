@@ -14,6 +14,8 @@
         service.postToUser = postToUser;   
         service.GetAllTags=GetAllTags;
         service.ShowMessagesWithTag=ShowMessagesWithTag;
+        service.SubscribeStreamWithTag=SubscribeStreamWithTag;
+        service.UnsubscribeStreamWithTag=UnsubscribeStreamWithTag;
         return service;
 
         
@@ -38,6 +40,17 @@
         function ShowMessagesWithTag(tag) {
         	
             return $http.get('http://localhost:8080/ActivityRestService/stream/showMessagesWithTag/'+tag).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
+        }
+        
+        
+        function SubscribeStreamWithTag(userId,tag) {
+        	console.log('Service-->SubscribeStreamWithTag called');
+            return $http.put('http://localhost:8080/ActivityRestService/stream/subscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error subscribing to tag'));
+        }
+        
+        function UnsubscribeStreamWithTag(userId,tag) {
+        	console.log('Service-->UnsubscribeStreamWithTag called');
+            return $http.put('http://localhost:8080/ActivityRestService/stream/unsubscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error unsubscribing to tag'));
         }
 
        
