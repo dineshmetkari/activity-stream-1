@@ -100,7 +100,7 @@
 						<div class="menu">
 
 							<div class="item" id="imageUploadAction">Image</div>
-							<div class="item">Attachment</div>
+							<div class="item" id="fileUploadAction">Attachment</div>
 
 						</div>
 					</div>
@@ -274,12 +274,18 @@
       <div class="ui medium image">
         <img src="images/rachel.png">
       </div>
-      <div class="description">
-        <div class="ui header">Upload Photo</div>
-        <p>We've found the following <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your e-mail address.</p>
-        <p>Is it okay to use this photo?</p>
-      </div>
-    </div>
+		<div class="description">
+			<div class="ui header">Upload Photo</div>
+			<form action="http://localhost:8080/ActivityRestService/fileupload_image" method="post"  enctype="multipart/form-data">
+			<div class="ui input">
+				<input type="file" placeholder="Upload photo..." name="file">
+
+			</div>
+			<input class="ui button" type="submit" value="Load Image"></input>
+			</form>
+			<p>Is it okay to use this photo?</p>
+		</div>
+	</div>
     
     <div class="actions">
       <div class="ui black deny button">
@@ -289,6 +295,39 @@
         Post
         <i class="checkmark icon"></i>
       </div>
+    </div>
+    </div>
+    
+    
+    <div class="ui large modal" id="fileUploadModal">
+    <div class="header">
+      Upload File
+    </div>
+   
+    <div class="content">
+      
+		<div class="description">
+			<div class="ui header">Upload File</div>
+			<form action="http://localhost:8080/ActivityRestService/fileupload" method="post"  enctype="multipart/form-data">
+			<div class="ui input">
+				<input type="file" placeholder="Upload file..." name="file">
+
+			</div>
+			<input class="ui button" type="submit" value="Upload File"></input>
+			</form>
+			<p>Is it okay to use this file?</p>
+		</div>
+	</div>
+    
+    <div class="actions">
+      <div class="ui black deny button">
+        Cancel
+      </div>
+      <div class="ui positive right labeled icon button">
+        Post
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
     </div>
 
 <script>
@@ -319,6 +358,16 @@ $(document).ready(function(){
     
     $("#imageUploadAction").click(function(){
     	$('#imageUploadModal')
+    	.modal({
+    		blurring: true
+  		})
+    	  .modal('show')
+    	;
+    });
+    
+    
+    $("#fileUploadAction").click(function(){
+    	$('#fileUploadModal')
     	.modal({
     		blurring: true
   		})
