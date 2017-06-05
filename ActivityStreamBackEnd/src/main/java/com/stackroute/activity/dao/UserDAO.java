@@ -12,7 +12,7 @@ public interface UserDAO {
 	public List<User> list();
 	public boolean validate(String id, String password);
 	public User get(String id);
-	
+	public boolean exists(String id);
 	
 
 }

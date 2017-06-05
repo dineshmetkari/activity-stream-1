@@ -131,7 +131,7 @@ public class StreamDAOImpl implements StreamDAO{
 	@SuppressWarnings("unchecked")
 	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId) {
 		
-		return getCurrentSession().createQuery("from UserStream where (userID=? and senderID=?) or (userID=? and senderID=?)")
+		return getCurrentSession().createQuery("from Stream where (receiverID=? and senderID=?) or (receiverID=? and senderID=?)")
 		.setString(0, userId)
 		.setString(1, otherUserId)
 		.setString(2, otherUserId)

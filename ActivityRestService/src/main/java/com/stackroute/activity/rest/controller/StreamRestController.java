@@ -53,30 +53,7 @@ public class StreamRestController {
 		
 	}
 	
-//---------------------Send Message to Circles---------------------------------------	
-	//tried to implement sending messages to multiple circles at once, but as it is out of scope, 
-	//will implement in the next version
-	
-	
-	/*@PostMapping("/stream/sendMessageToCircles/{circleName}")
-	public Stream sendMessageToCircles(@RequestBody List<String> circleNames,@RequestBody Stream stream)
-	{
-		Boolean sendStatus=streamDAO.sendMessageToCircles(circleNames, stream);
-		
-		if(sendStatus)
-		{
-			stream.setErrorCode("200");
-			stream.setErrorMessage("The message is sent successfully");
-			return stream;
-		}
-		else
-		{
-			stream.setErrorCode("404");
-			stream.setErrorMessage("Error!!! The message was not sent");
-			return stream;
-		}
-		
-	}*/
+
 	
 //-------------------Send Message to Users-------------------------------------	
 	@PostMapping("/stream/sendMessageToUser")

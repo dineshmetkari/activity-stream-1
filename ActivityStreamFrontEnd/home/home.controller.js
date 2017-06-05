@@ -251,7 +251,9 @@
         function send() {
         	var message=vm.stream.message;
         	var tags=(message.match(/#\w+/g));
-        	var arrayLength=tags.length;
+        	if(tags!=null){
+        		var arrayLength=tags.length;
+        	}
         	for (var i = 0; i < arrayLength; i++) {
         	    
         		tags[i]=tags[i].slice(1);
@@ -284,8 +286,9 @@
         	CircleService.CreateCircle(vm.circle)
             .then(function () {
             	alert('New Circle created with name:'+vm.circle.name);
-                
+            	loadAllCircles();
             });
+        	
         }
         
         function startPrivateMessage(){

@@ -86,5 +86,14 @@ public class UserDAOImpl implements UserDAO{
 		return (User) getCurrentSession().get(User.class, id);
 			
 	}
+	
+	public boolean exists(String id) {
+		User user=(User) getCurrentSession().get(User.class, id);
+		if(user!=null)
+			return true;
+		else
+			return false;
+			
+	}
 
 }

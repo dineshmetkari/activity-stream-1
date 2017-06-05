@@ -34,5 +34,25 @@ public class User extends BaseDomain{
 		this.password = password;
 	}
 	
+	 @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+
+	        User user = (User) o;
+
+	        if (id != user.id) return false;
+	        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+
+	        return true;
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        int result =10;
+	        result = 31 * result + (name != null ? name.hashCode() : 0);
+	        return result;
+	    }
+	
 
 }
