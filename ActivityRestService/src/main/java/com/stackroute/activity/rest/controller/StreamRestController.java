@@ -1,11 +1,13 @@
 package com.stackroute.activity.rest.controller;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.SortedMap;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class StreamRestController {
 	@Autowired
 	UserTag userTag;
 	
+	@Autowired
+	ResourceBundleMessageSource messageSource;
+	
 
 	
 //---------------------Send Message to Circle---------------------------------	
@@ -41,13 +46,13 @@ public class StreamRestController {
 		if(sendStatus)
 		{
 			stream.setErrorCode("200");
-			stream.setErrorMessage("The message is sent successfully");
+			stream.setErrorMessage(messageSource.getMessage("send.message.circle.success", null, Locale.US));
 			return stream;
 		}
 		else
 		{
 			stream.setErrorCode("404");
-			stream.setErrorMessage("Error!!! The message was not sent");
+			stream.setErrorMessage(messageSource.getMessage("send.message.circle.failure", null, Locale.US));
 			return stream;
 		}
 		
@@ -64,13 +69,13 @@ public class StreamRestController {
 		if(sendStatus)
 		{
 			stream.setErrorCode("200");
-			stream.setErrorMessage("The message is sent successfully to "+userId);
+			stream.setErrorMessage(messageSource.getMessage("send.message.user.success", new String[]{userId}, Locale.US));
 			return stream;
 		}
 		else
 		{
 			stream.setErrorCode("404");
-			stream.setErrorMessage("Error!!! The message was not sent");
+			stream.setErrorMessage(messageSource.getMessage("send.message.user.failure", new String[]{userId}, Locale.US));
 			return stream;
 		}
 	}
@@ -121,13 +126,13 @@ public class StreamRestController {
 					boolean status=streamDAO.subscribeUserToTag(userId, tag);
 					if(status==false){
 						userTag.setErrorCode("409");
-						userTag.setErrorMessage("User could not be subscribed to tag. Either user does not exist or he is already subscribed to the specified tag");
+						userTag.setErrorMessage(messageSource.getMessage("subscribe.user.tag.failure", new String[]{userId,tag}, Locale.US));
 						
 					}
 					else
 					{
 						userTag.setErrorCode("200");
-						userTag.setErrorMessage("User subscription added successfully");
+						userTag.setErrorMessage(messageSource.getMessage("subscribe.user.tag.success", new String[]{userId,tag}, Locale.US));
 						
 					}
 					return userTag;
@@ -143,13 +148,13 @@ public class StreamRestController {
 					boolean status=streamDAO.unsubscribeUserToTag(userId, tag);
 					if(status==false){
 						userTag.setErrorCode("409");
-						userTag.setErrorMessage("User could not be unsubscribed to tag");
+						userTag.setErrorMessage(messageSource.getMessage("unsubscribe.user.tag.failure", new String[]{tag}, Locale.US));
 						
 					}
 					else
 					{
 						userTag.setErrorCode("200");
-						userTag.setErrorMessage("User subscription removed successfully");
+						userTag.setErrorMessage(messageSource.getMessage("unsubscribe.user.tag.success", null, Locale.US));
 						
 					}
 					return userTag;

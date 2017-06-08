@@ -1,12 +1,14 @@
 package com.stackroute.activity.rest.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class UserRestController {
 	@Autowired
 	UserDAO userDAO;
 	
+	@Autowired
+	ResourceBundleMessageSource messageSource;
+	
 	//-------------------Retrieve All Users--------------------------------------------------------
     
 	@GetMapping(value="/user/")
@@ -50,7 +55,7 @@ public class UserRestController {
             logger.debug("User with id " + id + " not found");
             User errorUser=new User();
             errorUser.setErrorCode("404");
-            errorUser.setErrorMessage("User not found");
+            errorUser.setErrorMessage(messageSource.getMessage("user.not.found", null, Locale.US));
             return errorUser;
         }
         return user;
@@ -77,7 +82,7 @@ public class UserRestController {
   
         userDAO.save(user);
         user.setErrorCode("200");
-        user.setErrorMessage("User created successfully");
+        user.setErrorMessage(messageSource.getMessage("user.create.success", null, Locale.US));
        
         return user;
     }
@@ -95,7 +100,7 @@ public class UserRestController {
             logger.debug("User with id " + id + " not found");
             User errorUser=new User();
             errorUser.setErrorCode("404");
-            errorUser.setErrorMessage("User with the name "+user.getName()+" not found");
+            errorUser.setErrorMessage(messageSource.getMessage("user.update.failure",new String[]{id},Locale.US));
             return errorUser;
         }
   
@@ -108,7 +113,7 @@ public class UserRestController {
           
         userDAO.update(currentUser);
         currentUser.setErrorCode("200");
-        currentUser.setErrorMessage("User updated");
+        currentUser.setErrorMessage(messageSource.getMessage("user.update.success",new String[]{id},Locale.US));
         return currentUser;
     }
 	
@@ -124,7 +129,7 @@ public class UserRestController {
         	  session.setAttribute("loggedInUserId", u.getId());
         	  logger.debug("Logged in User ID:"+session.getAttribute("loggedInUserId").toString());
         	  u.setErrorCode("200");
-        	  u.setErrorMessage("Authentication successful");
+        	  u.setErrorMessage(messageSource.getMessage("authentication.success",null,Locale.US));
               return u;
           }
     
@@ -132,7 +137,7 @@ public class UserRestController {
           {
         	  User errorUser=new User();
         	  errorUser.setErrorCode("404");
-        	  errorUser.setErrorMessage("Authentication failure");
+        	  errorUser.setErrorMessage(messageSource.getMessage("authentication.failure",null,Locale.US));
         	  return errorUser;
           }
           
@@ -151,7 +156,7 @@ public class UserRestController {
   		
   		User user=new User();
   		user.setErrorCode("200");
-  		user.setErrorMessage("User successdully logged out");
+  		user.setErrorMessage(messageSource.getMessage("user.logout",null,Locale.US));
       
         return user;
       }

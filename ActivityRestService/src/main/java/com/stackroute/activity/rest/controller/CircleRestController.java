@@ -1,10 +1,12 @@
 package com.stackroute.activity.rest.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class CircleRestController {
 	@Autowired
 	UserCircle userCircle;
 	
+	@Autowired
+	ResourceBundleMessageSource messageSource;
+	
 	
 	
 	@PostMapping("/circle/create")
@@ -42,13 +47,13 @@ public class CircleRestController {
             logger.debug("A circle with name " + circle.getName() + " already exist");
             Circle errorCircle=new Circle();
             errorCircle.setErrorCode("409");
-            errorCircle.setErrorMessage("Circle with the name "+circle.getName()+" already exists");
+            errorCircle.setErrorMessage(messageSource.getMessage("circle.create.failure", new String[]{circle.getName()}, Locale.US));
             return errorCircle;
         }
 		
 		circleDAO.save(circle);
 		circle.setErrorCode("200");
-		circle.setErrorMessage("Circle created successfully");
+		circle.setErrorMessage(messageSource.getMessage("circle.create.success", null, Locale.US));
 		return circle;
 	}
 	
@@ -59,13 +64,13 @@ public class CircleRestController {
 		boolean status=circleDAO.addUser(userId, circleId);
 		if(status==false){
 			userCircle.setErrorCode("409");
-			userCircle.setErrorMessage("User could not be added. Either user does not exist or he is already added to circle");
+			userCircle.setErrorMessage(messageSource.getMessage("circle.add.user.failure", new String[]{userId,circleId}, Locale.US));
 			
 		}
 		else
 		{
 			userCircle.setErrorCode("200");
-			userCircle.setErrorMessage("User added successfully");
+			userCircle.setErrorMessage(messageSource.getMessage("circle.add.user.success", new String[]{userId,circleId}, Locale.US));
 			
 		}
 		return userCircle;
@@ -77,13 +82,13 @@ public class CircleRestController {
 		boolean status=circleDAO.removeUser(userId, circleId);
 		if(status==false){
 			userCircle.setErrorCode("404");
-			userCircle.setErrorMessage("User not found");
+			userCircle.setErrorMessage(messageSource.getMessage("circle.remove.user.failure", new String[]{userId,circleId}, Locale.US));
 			
 		}
 		else
 		{
 			userCircle.setErrorCode("200");
-			userCircle.setErrorMessage("User removed successfully");
+			userCircle.setErrorMessage(messageSource.getMessage("circle.remove.user.succss", new String[]{userId,circleId}, Locale.US));
 			
 		}
 		return userCircle;
