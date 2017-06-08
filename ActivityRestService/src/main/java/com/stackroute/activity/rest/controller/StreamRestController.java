@@ -40,20 +40,20 @@ public class StreamRestController {
 	
 //---------------------Send Message to Circle---------------------------------	
 	@PostMapping("/stream/sendMessageToCircle/{circleName}")
-	public Stream sendMessageToCircle(@PathVariable("circleName") String circleName,@RequestBody Stream stream)
+	public ResponseEntity<Stream> sendMessageToCircle(@PathVariable("circleName") String circleName,@RequestBody Stream stream)
 	{
 		Boolean sendStatus=streamDAO.sendMessageToCircle(circleName, stream);
 		if(sendStatus)
 		{
 			stream.setErrorCode("200");
 			stream.setErrorMessage(messageSource.getMessage("send.message.circle.success", null, Locale.US));
-			return stream;
+			return new ResponseEntity<Stream>(HttpStatus.OK);
 		}
 		else
 		{
 			stream.setErrorCode("404");
 			stream.setErrorMessage(messageSource.getMessage("send.message.circle.failure", null, Locale.US));
-			return stream;
+			return new ResponseEntity<Stream>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}
@@ -62,7 +62,7 @@ public class StreamRestController {
 	
 //-------------------Send Message to Users-------------------------------------	
 	@PostMapping("/stream/sendMessageToUser")
-	public Stream sendMessageToUser(@RequestBody Stream stream){
+	public ResponseEntity<Stream> sendMessageToUser(@RequestBody Stream stream){
 		
 		String userId=stream.getReceiverID();
 		Boolean sendStatus=streamDAO.sendMessageToUser(userId, stream);
@@ -70,49 +70,49 @@ public class StreamRestController {
 		{
 			stream.setErrorCode("200");
 			stream.setErrorMessage(messageSource.getMessage("send.message.user.success", new String[]{userId}, Locale.US));
-			return stream;
+			return new ResponseEntity<Stream>(HttpStatus.OK);
 		}
 		else
 		{
 			stream.setErrorCode("404");
 			stream.setErrorMessage(messageSource.getMessage("send.message.user.failure", new String[]{userId}, Locale.US));
-			return stream;
+			return new ResponseEntity<Stream>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 
 //---------------------Get Messages by User----------------------------------
 	@GetMapping("/stream/getMessagesByUser/{userId}/{otherUserId}")
-	public List<Stream> getMessagesByUser(@PathVariable("userId") String userId,@PathVariable("otherUserId") String otherUserId){
+	public ResponseEntity<List<Stream>> getMessagesByUser(@PathVariable("userId") String userId,@PathVariable("otherUserId") String otherUserId){
 		
-		return streamDAO.getMessagesFromUserHome(userId,otherUserId);
+		return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromUserHome(userId,otherUserId),HttpStatus.OK);
 		
 	}
 
 	
 //---------------------Get Messages by Circle--------------------------------
 		@GetMapping("/stream/getMessagesByCircle/{circleId}")
-		public List<Stream> getMessagesByCircle(@PathVariable("circleId") String circleId){
+		public ResponseEntity<List<Stream>> getMessagesByCircle(@PathVariable("circleId") String circleId){
 			
-			return streamDAO.getMessagesFromCircle(circleId);
+			return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromCircle(circleId),HttpStatus.OK);
 			
 		}	
 		
 		
-		//---------------------Get Messages by Circle--------------------------------
+		//---------------------Get Messages by Tags--------------------------------
 		@GetMapping("/stream/getAllTags")
-		public List<String> listAllTags(){
+		public ResponseEntity<List<String>> listAllTags(){
 					
-			return streamDAO.listTags();
+			return new ResponseEntity<List<String>>(streamDAO.listTags(),HttpStatus.OK);
 					
 		}	
 		
 		
 		//---------------------Get Messages by Circle--------------------------------
 				@GetMapping("/stream/showMessagesWithTag/{tag}")
-				public List<Stream> showMessagesWithTag(@PathVariable("tag") String tag){
+				public ResponseEntity<List<Stream>> showMessagesWithTag(@PathVariable("tag") String tag){
 							
-					return streamDAO.showMessagesWithTag(tag);
+					return new ResponseEntity<List<Stream>>(streamDAO.showMessagesWithTag(tag),HttpStatus.OK);
 							
 				}	
 				
@@ -121,21 +121,21 @@ public class StreamRestController {
 	
 	
 				@PutMapping("/stream/subscribe/{userId}/{tag}")
-				public UserTag subscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
+				public ResponseEntity<UserTag> subscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
 					
 					boolean status=streamDAO.subscribeUserToTag(userId, tag);
 					if(status==false){
 						userTag.setErrorCode("409");
 						userTag.setErrorMessage(messageSource.getMessage("subscribe.user.tag.failure", new String[]{userId,tag}, Locale.US));
-						
+						return new ResponseEntity<UserTag>(HttpStatus.INTERNAL_SERVER_ERROR);
 					}
 					else
 					{
 						userTag.setErrorCode("200");
 						userTag.setErrorMessage(messageSource.getMessage("subscribe.user.tag.success", new String[]{userId,tag}, Locale.US));
-						
+						return new ResponseEntity<UserTag>(HttpStatus.OK);
 					}
-					return userTag;
+					
 				}	
 				
 				
@@ -143,29 +143,29 @@ public class StreamRestController {
 				
 				
 				@PutMapping("/stream/unsubscribe/{userId}/{tag}")
-				public UserTag unsubscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
+				public ResponseEntity<UserTag> unsubscribeUserToTag(@PathVariable("userId") String userId, @PathVariable("tag") String tag){
 					
 					boolean status=streamDAO.unsubscribeUserToTag(userId, tag);
 					if(status==false){
 						userTag.setErrorCode("409");
 						userTag.setErrorMessage(messageSource.getMessage("unsubscribe.user.tag.failure", new String[]{tag}, Locale.US));
-						
+						return new ResponseEntity<UserTag>(HttpStatus.INTERNAL_SERVER_ERROR);
 					}
 					else
 					{
 						userTag.setErrorCode("200");
 						userTag.setErrorMessage(messageSource.getMessage("unsubscribe.user.tag.success", null, Locale.US));
-						
+						return new ResponseEntity<UserTag>(HttpStatus.OK);
 					}
-					return userTag;
+					
 				}
 	
 				
 				//-----------------------Retrieve tags subscribed by a specific user--------------------------------	
 				@GetMapping("/tags/search/user/{userId}")
-				public List<String> getMyTags(@PathVariable("userId") String userId){
+				public ResponseEntity<List<String>> getMyTags(@PathVariable("userId") String userId){
 					
-					return streamDAO.listMyTags(userId);
+					return new ResponseEntity<List<String>>(streamDAO.listMyTags(userId),HttpStatus.OK);
 					
 				}
 }

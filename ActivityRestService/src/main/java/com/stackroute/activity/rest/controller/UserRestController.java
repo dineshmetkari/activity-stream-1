@@ -39,16 +39,16 @@ public class UserRestController {
 	//-------------------Retrieve All Users--------------------------------------------------------
     
 	@GetMapping(value="/user/")
-    public List<User> listAllUsers() {
+    public ResponseEntity<List<User>> listAllUsers() {
         
-		return userDAO.list();
+		return new ResponseEntity<List<User>>(userDAO.list(),HttpStatus.OK);
         
     }
 	
 	//-------------------Retrieve Single User--------------------------------------------------------
     
 	@GetMapping(value="/user/id/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
-    public User getUser(@PathVariable("id") String id) {
+    public ResponseEntity<User> getUser(@PathVariable("id") String id) {
         logger.debug("Fetching User with id " + id);
         User user = userDAO.get(id);
         if (user == null) {
@@ -56,9 +56,9 @@ public class UserRestController {
             User errorUser=new User();
             errorUser.setErrorCode("404");
             errorUser.setErrorMessage(messageSource.getMessage("user.not.found", null, Locale.US));
-            return errorUser;
+            return new ResponseEntity<User>(errorUser,HttpStatus.NOT_FOUND);
         }
-        return user;
+        return new ResponseEntity<User>(user,HttpStatus.OK);
     }		
 
 	
@@ -68,7 +68,7 @@ public class UserRestController {
 	 //-------------------Create a User--------------------------------------------------------
     
 	@PostMapping(value = "/user/")
-    public User createUser(@RequestBody User user) {
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
         logger.debug("Creating User " + user.getName());
   
         User u=userDAO.get(user.getId());
@@ -77,21 +77,21 @@ public class UserRestController {
             User errorUser=new User();
             errorUser.setErrorCode("409");
             errorUser.setErrorMessage("User with the name "+user.getName()+" already exists");
-            return errorUser;
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
   
         userDAO.save(user);
         user.setErrorCode("200");
         user.setErrorMessage(messageSource.getMessage("user.create.success", null, Locale.US));
        
-        return user;
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 	
 	
 	 //------------------- Update a User --------------------------------------------------------
     
 	@PutMapping(value = "/user/{id}")
-    public User updateUser(@PathVariable("id") String id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User user) {
         logger.debug("Updating User " + id);
           
         User currentUser = userDAO.get(id);
@@ -101,26 +101,23 @@ public class UserRestController {
             User errorUser=new User();
             errorUser.setErrorCode("404");
             errorUser.setErrorMessage(messageSource.getMessage("user.update.failure",new String[]{id},Locale.US));
-            return errorUser;
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
   
         
         currentUser.setName(user.getName());
         currentUser.setPassword(user.getPassword());
         
-        
-        
-          
         userDAO.update(currentUser);
         currentUser.setErrorCode("200");
         currentUser.setErrorMessage(messageSource.getMessage("user.update.success",new String[]{id},Locale.US));
-        return currentUser;
+        return new ResponseEntity<User>(currentUser,HttpStatus.OK);
     }
 	
 	  //-------------------Authenticate a User--------------------------------------------------------
     
   	@PostMapping(value = "/user/authenticate")
-      public User authenticate(@RequestBody User user,HttpSession session) {
+      public ResponseEntity<User> authenticate(@RequestBody User user,HttpSession session) {
           
     
           if (userDAO.validate(user.getId(),user.getPassword())) {
@@ -130,7 +127,7 @@ public class UserRestController {
         	  logger.debug("Logged in User ID:"+session.getAttribute("loggedInUserId").toString());
         	  u.setErrorCode("200");
         	  u.setErrorMessage(messageSource.getMessage("authentication.success",null,Locale.US));
-              return u;
+              return new ResponseEntity<User>(u,HttpStatus.OK);
           }
     
           else
@@ -138,7 +135,7 @@ public class UserRestController {
         	  User errorUser=new User();
         	  errorUser.setErrorCode("404");
         	  errorUser.setErrorMessage(messageSource.getMessage("authentication.failure",null,Locale.US));
-        	  return errorUser;
+        	  return new ResponseEntity<User>(HttpStatus.UNAUTHORIZED);
           }
           
           
@@ -147,7 +144,7 @@ public class UserRestController {
 //-------------------User Logout--------------------------------------------------------
     
   	@PutMapping(value = "/user/logout")
-      public User logout(HttpSession session) {
+      public ResponseEntity<Void> logout(HttpSession session) {
           
   		String userId=(String)session.getAttribute("loggedInUserId");
   		
@@ -158,7 +155,7 @@ public class UserRestController {
   		user.setErrorCode("200");
   		user.setErrorMessage(messageSource.getMessage("user.logout",null,Locale.US));
       
-        return user;
+        return new ResponseEntity<Void>(HttpStatus.OK);
       }
 
 }
