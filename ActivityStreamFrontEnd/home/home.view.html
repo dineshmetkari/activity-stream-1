@@ -3,7 +3,7 @@
 <div class="ui bottom attached segment pushable homepage">
 
 
-	<div class="ui visible inverted left vertical sidebar menu">
+	<div class="ui visible inverted left vertical sidebar menu" style="min-height:100vh;max-height:100vh; overflow-y:auto;white-space:nowrap;">
 
 		<a class="item"> Hi {{vm.user.id}}!! </a>
 		
@@ -55,10 +55,7 @@
 
 
 	<div class="pusher">
-	
-		<div class="ui fluid container" id="messageArea">
-			<div class="ui fluid basic segment">
-				<div class="ui secondary menu">
+	<div class="ui secondary menu">
 					<a class="item" id="searchCircleAction"> Circles </a>
 					<a class="item" id="searchUserAction"> Users</a> 
 					<a class="item" id="searchTagAction"> Tags </a>
@@ -72,6 +69,23 @@
 						<a class="ui item" ng-click="vm.logout()"> Logout </a>
 					</div>
 				</div>
+		<div class="ui fluid container" id="messageArea" style="min-height:80vh;max-height:80vh; overflow-y:scroll;white-space:nowrap;">
+			
+			<!-- <div class="ui fluid basic segment"> -->
+				<!-- <div class="ui secondary menu">
+					<a class="item" id="searchCircleAction"> Circles </a>
+					<a class="item" id="searchUserAction"> Users</a> 
+					<a class="item" id="searchTagAction"> Tags </a>
+					<div class="menu">
+						<div class="item">
+							<div class="ui icon input">
+								<input type="text" placeholder="Search..."> <i
+									class="search link icon"></i>
+							</div>
+						</div>
+						<a class="ui item" ng-click="vm.logout()"> Logout </a>
+					</div>
+				</div> -->
 
 
 
@@ -93,7 +107,30 @@
 
 
 
-				<div class="ui left action input fluid" id="messageInput">
+				<!-- <div class="ui left action input fluid" id="messageInput">
+
+					<div class="ui ui teal icon top left pointing dropdown button" id="selectMessageType">
+						<i class="add icon"></i>
+						<div class="menu">
+
+							<div class="item" id="imageUploadAction">Image</div>
+							<div class="item" id="fileUploadAction">Attachment</div>
+
+						</div>
+					</div>
+
+
+					<input type="text" value="" ng-model="vm.stream.message"
+						ng-keypress="$event.keyCode === 13 && vm.send()">
+
+
+				</div> -->
+
+
+
+			<!-- </div> -->
+</div>
+ <div class="ui left action input fluid" id="messageInput">
 
 					<div class="ui ui teal icon top left pointing dropdown button" id="selectMessageType">
 						<i class="add icon"></i>
@@ -111,16 +148,10 @@
 
 
 				</div>
-
-
-
-			</div>
-
- 
 			
 			
 
-		</div>
+		
 	
 	
 </div>
