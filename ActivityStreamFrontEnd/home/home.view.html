@@ -1,9 +1,9 @@
 
 
-<div class="ui bottom attached segment pushable homepage">
+<div class="ui bottom attached segment pushable homepage" >
 
 
-	<div class="ui visible inverted left vertical sidebar menu" style="min-height:100vh;max-height:100vh; overflow-y:auto;white-space:nowrap;">
+	<div class="ui visible inverted left vertical sidebar menu" style="overflow-y:auto">
 
 		<a class="item"> Hi {{vm.user.id}}!! </a>
 		
@@ -46,7 +46,7 @@
 		<h4 class="ui horizontal inverted divider">Subscribed Tags <i class="tags icon"></i></h4>
 		
 		<a class="item" ng-repeat="tag in vm.tags"
-			ng-click="vm.selectTag(tag);vm.showMessagesWithTag()"> <i class="tag thin icon"></i>
+			ng-click="vm.selectTag(tag)"> <i class="tag thin icon"></i>
 			{{tag}}
 		</a>
 	</div>
@@ -69,7 +69,7 @@
 						<a class="ui item" ng-click="vm.logout()"> Logout </a>
 					</div>
 				</div>
-		<div class="ui fluid container" id="messageArea" style="min-height:80vh;max-height:80vh; overflow-y:scroll;white-space:nowrap;">
+		<div class="ui fluid container" id="messageArea" style="height:87vh; overflow-y:auto;">
 			
 			<!-- <div class="ui fluid basic segment"> -->
 				<!-- <div class="ui secondary menu">
@@ -88,9 +88,9 @@
 				</div> -->
 
 
-
+				<button class="ui fluid bottom attached button" ng-show="vm.resultLength" ng-click="vm.pageChanged(vm.newPageNumber)">Load older messages</button>
 				<div class="ui fluid card"
-					ng-repeat="stream in vm.streams | orderBy : 'postedDate' : false">
+					ng-repeat="stream in vm.streams| orderBy : 'postedDate' : false">
 					<div class="content">
 						<div class="header">{{stream.senderID}}</div>
 						 
@@ -104,6 +104,7 @@
 							ng-repeat="tag in stream.tag track by $index" ng-click="vm.selectTag(tag);vm.showMessagesWithTag()">{{tag}}</a>
 					</div>
 				</div>
+				 
 
 
 
@@ -287,7 +288,7 @@
  	<button class="ui positive button" ng-hide="vm.tagSubscriptionStatus" ng-click="vm.subscribeStreamWithTag()">Subscribe</button>
  	<button class="ui negative button" ng-show="vm.tagSubscriptionStatus" ng-click="vm.unsubscribeStreamWithTag()">Unsubscribe</button>
  	<div class="or"></div>
-  <button class="ui teal button" ng-click="vm.showMessagesWithTag()">Search Stream</button>
+  <button class="ui teal button" ng-click="vm.showMessagesWithTag(1)">Search Stream</button>
 </div>
 	</div>
 </div>

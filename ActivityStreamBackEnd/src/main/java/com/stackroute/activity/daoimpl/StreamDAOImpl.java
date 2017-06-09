@@ -34,6 +34,8 @@ public class StreamDAOImpl implements StreamDAO{
 	
 	@Autowired  private CircleDAO circleDAO;
 	
+	private static int pageSize = 8;
+	
 	public StreamDAOImpl(SessionFactory sessionFactory)
 	{
 		this.sessionFactory=sessionFactory;
@@ -119,36 +121,54 @@ public class StreamDAOImpl implements StreamDAO{
 	}
 	*/
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Stream> getMessagesFromCircle(String circleID) {
 		
 		return getCurrentSession().createQuery("from Stream where id in (select streamID from StreamCircle where circleID=?)")
 		.setString(0, circleID).list();
 
 	
+	}*/
+	
+	public List<Stream> getMessagesFromCircle(String circleID,int pageNumber) {
+		
+		Query query= getCurrentSession().createQuery("from Stream where id in (select streamID from StreamCircle where circleID=?) order by postedDate desc").setString(0, circleID);
+		query.setString(0, circleID);
+		query.setFirstResult(pageSize * (pageNumber - 1));
+		query.setMaxResults(pageSize);
+		
+		
+		return query.list();
+
+	
 	}
 	
+	
+	
+	
 	@SuppressWarnings("unchecked")
-	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId) {
+	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId,int pageNumber) {
 		
-		return getCurrentSession().createQuery("from Stream where (receiverID=? and senderID=?) or (receiverID=? and senderID=?)")
+		return getCurrentSession().createQuery("from Stream where (receiverID=? and senderID=?) or (receiverID=? and senderID=?) order by postedDate desc")
 		.setString(0, userId)
 		.setString(1, otherUserId)
 		.setString(2, otherUserId)
 		.setString(3, userId)
+		.setFirstResult(pageSize*(pageNumber-1))
+		.setMaxResults(pageSize)
 		.list();
 
 	
 	}
 
-	public List<Stream> getMessages(String userID) {
+	public List<Stream> getMessages(String userID,int pageNumber) {
 		
 		List<String> myCircles=  circleDAO.getMyCircles(userID);
 		List<Stream> allStreams = new ArrayList<Stream>();
 		List<Stream> circleStream;
 		for( String circleName : myCircles)
 		{
-			circleStream = getMessagesFromCircle(circleName);
+			circleStream = getMessagesFromCircle(circleName,pageNumber);
 			if(circleStream!=null)
 			{
 				allStreams.addAll(circleStream);
@@ -165,17 +185,17 @@ public class StreamDAOImpl implements StreamDAO{
 	}
 	
 	
-	public List<Stream> showMessagesWithTag(String tag){
+	public List<Stream> showMessagesWithTag(String tag,int pageNumber){
 		//return getCurrentSession().createQuery("select s.senderID,s.postedDate,s.streamType,s.tag,s.message,s.receiverID,sc.circleID from Stream s inner join s.StreamCircle sc where s.id=sc.streamID").list();
 		
-		return getCurrentSession().createSQLQuery("select a.sender_id as senderID,a.posted_date as postedDate,a.stream_type as streamType,a.tag as tag,a.message as message,a.receiver_id as receiverID,b.circle_id as circleID "
+		return getCurrentSession().createSQLQuery("(select a.sender_id as senderID,a.posted_date as postedDate,a.stream_type as streamType,a.tag as tag,a.message as message,a.receiver_id as receiverID,b.circle_id as circleID "
 				+"from stream a join stream_circle b"
 				+" where a.tag like '%"+tag+"%' and a.receiver_id is null and"
-				+" a.id=b.stream_id"
+				+" a.id=b.stream_id)"
 				+" union"
-				+" select a.sender_id,a.posted_date,a.stream_type,a.tag,a.message,a.receiver_id,null"
+				+" (select a.sender_id,a.posted_date,a.stream_type,a.tag,a.message,a.receiver_id,null"
 				+" from stream a"
-				+" where receiver_id is not null and a.tag like '%"+tag+"%'")
+				+" where receiver_id is not null and a.tag like '%"+tag+"%') order by posteddate desc")
 				.addScalar("senderID",StandardBasicTypes.STRING)
 				.addScalar("postedDate",StandardBasicTypes.TIMESTAMP)
 				.addScalar("streamType",StandardBasicTypes.STRING)
@@ -184,13 +204,12 @@ public class StreamDAOImpl implements StreamDAO{
 				.addScalar("receiverID",StandardBasicTypes.STRING)
 				.addScalar("circleID",StandardBasicTypes.STRING)
 				.setResultTransformer(Transformers.aliasToBean(StreamAndStreamCircle.class))
+				.setFirstResult(pageSize * (pageNumber - 1))
+				.setMaxResults(pageSize)
 				.list();
 	}
 	
-	/*select a.sender_id,a.posted_date,a.stream_type,a.tag,a.message,a.receiver_id,b.circle_id
-	from stream a join stream_circle b
-	where a.tag="angular" and a.receiver_id is null and
-	a.id=b.stream_id*/
+	
 
 	
 public boolean subscribeUserToTag(String userID, String tag) {

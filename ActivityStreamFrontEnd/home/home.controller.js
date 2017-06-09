@@ -18,6 +18,8 @@
         vm.currentCircle=null;
         vm.circleJoinStatus=null;
         vm.tagSubscriptionStatus=null;
+        vm.resultLength=null;
+        vm.newPageNumber=0;
         vm.circles=[];
         vm.streams=[];
         vm.tags=[];
@@ -40,6 +42,7 @@
         vm.subscribeStreamWithTag=subscribeStreamWithTag;
         vm.unsubscribeStreamWithTag=unsubscribeStreamWithTag;
         vm.showTagDetails=showTagDetails;
+        vm.pageChanged=pageChanged;
         vm.userCircleFlag=null;
         
         initController();
@@ -47,7 +50,7 @@
         function initController() {
             loadCurrentUser();
             loadCirclesForCurrentUser();
-            loadStreamByCircle();
+            loadStreamByCircle(1);
             loadAllUsers();
             loadAllCircles();
             loadAllTags();
@@ -94,10 +97,17 @@
         }
 
         
-        function loadStreamByCircle() {
+        function loadStreamByCircle(pageNumber) {
         	console.log('inside loadStreamByCircle function:'+vm.selectedCircle)
-            UserService.GetStreamByCircleId(vm.selectedCircle)
+            UserService.GetStreamByCircleId(vm.selectedCircle,pageNumber)
                 .then(function (streams) {
+                	vm.resultLength=streams.length;
+                	if(vm.resultLength==0) {
+                		console.log("Empty");
+                		
+                		
+                	}
+                	else{
                 	var arrayLength = streams.length;
                 	for (var i = 0; i < arrayLength; i++) {
                 	    //alert(streams[i].tag);
@@ -106,16 +116,27 @@
                 	    streams[i].tag=tagArr;
                 	}
                 	console.log(streams);
-                    vm.streams = streams;
-                    
+                    vm.streams = vm.streams.concat(streams);
+                    vm.newPageNumber=pageNumber+1;
+                	}
                 });
         }
         
         
-        function loadStreamByUser() {
+       
+        
+        
+        function loadStreamByUser(pageNumber) {
         	console.log('inside loadStreamByUser function:'+vm.selectedUser)
-            UserService.GetStreamByUserId($rootScope.currentUser.id,vm.selectedUser)
+            UserService.GetStreamByUserId($rootScope.currentUser.id,vm.selectedUser,pageNumber)
                 .then(function (streams) {
+                	vm.resultLength=streams.length;
+                	if(vm.resultLength==0) {
+                		console.log("Empty");
+                		
+                		
+                	}
+                	else{
                 	var arrayLength = streams.length;
                 	for (var i = 0; i < arrayLength; i++) {
                 	    //alert(streams[i].tag);
@@ -124,8 +145,9 @@
                 	    streams[i].tag=tagArr;
                 	}
                 	console.log(streams);
-                    vm.streams = streams;
-                    
+                    vm.streams = vm.streams.concat(streams);
+                    vm.newPageNumber=pageNumber+1;
+                	}
                 });
         }
         
@@ -133,7 +155,8 @@
         	console.log(id);
         	vm.userCircleFlag='circle';
         	vm.selectedCircle=id;
-        	loadStreamByCircle();
+        	vm.streams=[];
+        	loadStreamByCircle(1);
         	
         }
         
@@ -142,7 +165,8 @@
         	console.log(id);
         	vm.selectedUser=id;
         	vm.userCircleFlag='user';
-        	loadStreamByUser();
+        	vm.streams=[];
+        	loadStreamByUser(1);
         	
         }
         
@@ -150,7 +174,8 @@
         function selectTag(tag) {
         	console.log(tag);
         	vm.selectedTag=tag;
-        	
+        	vm.streams=[];
+        	showMessagesWithTag(1);
         	
         }
         
@@ -174,6 +199,7 @@
         function showTagDetails(tag) {
         	console.log("showTagDetails method:"+tag);
         	vm.selectedTag=tag;
+        	vm.streams=[];
         	
         	   
         	
@@ -217,7 +243,7 @@
         function postToCircle(stream,circle) {
             StreamService.postToCircle(stream,circle)
             .then(function () {
-            	loadStreamByCircle();
+            	loadStreamByCircle(1);
             	vm.stream.message="";
             });
         }
@@ -225,7 +251,8 @@
         function postToUser(stream) {
             StreamService.postToUser(stream)
             .then(function () {
-            	loadStreamByUser();
+            	vm.streams=[];
+            	loadStreamByUser(1);
             	vm.stream.message="";
             });
         }
@@ -295,7 +322,8 @@
         	
         	vm.userCircleFlag='user';
         	vm.recentUsers.push(vm.selectedUser);
-        	loadStreamByUser();
+        	vm.streams=[];
+        	loadStreamByUser(1);
         }
         
         function loadAllTags() {
@@ -327,11 +355,18 @@
             return result;
         }*/
         
-        function showMessagesWithTag() {
+        function showMessagesWithTag(pageNumber) {
         	console.log('inside showMessagesWithTag function');
-            StreamService.ShowMessagesWithTag(vm.selectedTag)
+            StreamService.ShowMessagesWithTag(vm.selectedTag,pageNumber)
                 .then(function(streams) {
-                	console.log('1');
+                	vm.resultLength=streams.length;
+                	if(vm.resultLength==0) {
+                		console.log("Empty");
+                		
+                		
+                	}
+                	else {
+                		
                 	var arrayLength = streams.length;
                 	for (var i = 0; i < arrayLength; i++) {
                 		var tagArr=streams[i].tag.split(',');
@@ -339,9 +374,39 @@
                 	    streams[i].tag=tagArr;
                 	}
                 	console.log(streams);
-                    vm.streams = streams;
+                    vm.streams = vm.streams.concat(streams);
+                    vm.newPageNumber=pageNumber+1;
+                	}
                 });
         }
+        
+        
+        /*function loadStreamByCircle(pageNumber) {
+        	console.log('inside loadStreamByCircle function:'+vm.selectedCircle)
+            UserService.GetStreamByCircleId(vm.selectedCircle,pageNumber)
+                .then(function (streams) {
+                	vm.resultLength=streams.length;
+                	if(vm.resultLength==0) {
+                		console.log("Empty");
+                		
+                		
+                	}
+                	else{
+                	var arrayLength = streams.length;
+                	for (var i = 0; i < arrayLength; i++) {
+                	    //alert(streams[i].tag);
+                		var tagArr=streams[i].tag.split(',');
+                	    console.log("tagArr"+tagArr);
+                	    streams[i].tag=tagArr;
+                	}
+                	console.log(streams);
+                    vm.streams = vm.streams.concat(streams);
+                    vm.newPageNumber=pageNumber+1;
+                	}
+                });
+        }*/
+       
+        
         
         
         function subscribeStreamWithTag() {
@@ -371,6 +436,16 @@
                     
                 });
         }
+        
+        function pageChanged(newPage) {
+        	console.log('inside pageChanged'+newPage);
+        	
+            //getResultsPage(newPage);
+        	loadStreamByCircle(newPage);
+        }
+        
+        
+        
         
     }
 

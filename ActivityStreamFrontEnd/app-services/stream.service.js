@@ -37,9 +37,9 @@
             return $http.get('http://localhost:8080/ActivityRestService/stream/getAllTags').then(handleSuccess, handleError('Error retrieving tags'));
         }
         
-        function ShowMessagesWithTag(tag) {
+        function ShowMessagesWithTag(tag,pageNumber) {
         	
-            return $http.get('http://localhost:8080/ActivityRestService/stream/showMessagesWithTag/'+tag).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
+            return $http.get('http://localhost:8080/ActivityRestService/stream/showMessagesWithTag/'+tag+"/"+pageNumber).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
         }
         
         

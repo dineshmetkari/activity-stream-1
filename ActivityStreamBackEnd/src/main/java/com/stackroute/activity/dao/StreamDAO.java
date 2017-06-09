@@ -8,11 +8,11 @@ import com.stackroute.activity.model.Stream;
 
 public interface StreamDAO {
 	
-	public List<Stream> getMessagesFromCircle(String circleName); 
+	public List<Stream> getMessagesFromCircle(String circleName,int pageNumber); 
 	
-	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId);
+	public List<Stream> getMessagesFromUserHome(String userId,String otherUserId,int pageNumber);
 	
-	public List<Stream> getMessages(String userID); 
+	public List<Stream> getMessages(String userID,int pageNumber); 
 	
 	public boolean sendMessageToCircle(String circleName,Stream stream);
 	 
@@ -24,7 +24,7 @@ public interface StreamDAO {
 	
 	public List<String> listMyTags(String userId);
 	
-	public List<Stream> showMessagesWithTag(String tag);
+	public List<Stream> showMessagesWithTag(String tag,int pageNumber);
 	
 	public boolean subscribeUserToTag(String userID, String tag);
 	

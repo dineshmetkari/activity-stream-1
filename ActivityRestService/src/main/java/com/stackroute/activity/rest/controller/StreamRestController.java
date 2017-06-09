@@ -82,24 +82,24 @@ public class StreamRestController {
 	
 
 //---------------------Get Messages by User----------------------------------
-	@GetMapping("/stream/getMessagesByUser/{userId}/{otherUserId}")
-	public ResponseEntity<List<Stream>> getMessagesByUser(@PathVariable("userId") String userId,@PathVariable("otherUserId") String otherUserId){
+	@GetMapping("/stream/getMessagesByUser/{userId}/{otherUserId}/{pageNumber}")
+	public ResponseEntity<List<Stream>> getMessagesByUser(@PathVariable("userId") String userId,@PathVariable("otherUserId") String otherUserId,@PathVariable("pageNumber") int pageNumber){
 		
-		return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromUserHome(userId,otherUserId),HttpStatus.OK);
+		return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromUserHome(userId,otherUserId,pageNumber),HttpStatus.OK);
 		
 	}
 
 	
 //---------------------Get Messages by Circle--------------------------------
-		@GetMapping("/stream/getMessagesByCircle/{circleId}")
-		public ResponseEntity<List<Stream>> getMessagesByCircle(@PathVariable("circleId") String circleId){
+		@GetMapping("/stream/getMessagesByCircle/{circleId}/{pageNumber}")
+		public ResponseEntity<List<Stream>> getMessagesByCircle(@PathVariable("circleId") String circleId,@PathVariable("pageNumber") int pageNumber){
 			
-			return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromCircle(circleId),HttpStatus.OK);
+			return new ResponseEntity<List<Stream>>(streamDAO.getMessagesFromCircle(circleId,pageNumber),HttpStatus.OK);
 			
 		}	
 		
 		
-		//---------------------Get Messages by Tags--------------------------------
+		//---------------------List All Tags--------------------------------
 		@GetMapping("/stream/getAllTags")
 		public ResponseEntity<List<String>> listAllTags(){
 					
@@ -108,11 +108,11 @@ public class StreamRestController {
 		}	
 		
 		
-		//---------------------Get Messages by Circle--------------------------------
-				@GetMapping("/stream/showMessagesWithTag/{tag}")
-				public ResponseEntity<List<Stream>> showMessagesWithTag(@PathVariable("tag") String tag){
+		//---------------------Get Messages by Tag--------------------------------
+				@GetMapping("/stream/showMessagesWithTag/{tag}/{pageNumber}")
+				public ResponseEntity<List<Stream>> showMessagesWithTag(@PathVariable("tag") String tag,@PathVariable("pageNumber") int pageNumber){
 							
-					return new ResponseEntity<List<Stream>>(streamDAO.showMessagesWithTag(tag),HttpStatus.OK);
+					return new ResponseEntity<List<Stream>>(streamDAO.showMessagesWithTag(tag,pageNumber),HttpStatus.OK);
 							
 				}	
 				

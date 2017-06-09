@@ -31,8 +31,8 @@ public class UserHomeRestController {
 	StreamDAO streamDAO;
 	
 	//---------------------Get Messages by User----------------------------------
-		@GetMapping("/userHome/getInboxByUser/{userId}")
-		public UserHome getInboxByUser(@PathVariable("userId") String userId){
+		@GetMapping("/userHome/getInboxByUser/{userId}/{pageNumber}")
+		public UserHome getInboxByUser(@PathVariable("userId") String userId,@PathVariable("pageNumber") int pageNumber){
 			
 			
 			userHome.setMyInbox(userHomeDAO.getMyInbox(userId));
@@ -40,7 +40,7 @@ public class UserHomeRestController {
 			
 			for(String circleName:userHome.getMyCircles()){
 				
-				streamDAO.getMessagesFromCircle(circleName);
+				streamDAO.getMessagesFromCircle(circleName,pageNumber);
 			}
 			
 			return userHome;
