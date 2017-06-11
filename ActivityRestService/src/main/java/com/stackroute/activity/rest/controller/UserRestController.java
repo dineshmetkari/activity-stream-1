@@ -12,6 +12,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class UserRestController {
 	ResourceBundleMessageSource messageSource;
 	
 	//-------------------Retrieve All Users--------------------------------------------------------
-    
+	
 	@GetMapping(value="/user/")
     public ResponseEntity<List<User>> listAllUsers() {
         
@@ -46,7 +47,7 @@ public class UserRestController {
     }
 	
 	//-------------------Retrieve Single User--------------------------------------------------------
-    
+	
 	@GetMapping(value="/user/id/{id}",produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") String id) {
         logger.debug("Fetching User with id " + id);
@@ -66,7 +67,7 @@ public class UserRestController {
 	
 	
 	 //-------------------Create a User--------------------------------------------------------
-    
+	
 	@PostMapping(value = "/user/")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         logger.debug("Creating User " + user.getName());
@@ -89,7 +90,7 @@ public class UserRestController {
 	
 	
 	 //------------------- Update a User --------------------------------------------------------
-    
+	
 	@PutMapping(value = "/user/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody User user) {
         logger.debug("Updating User " + id);
@@ -115,7 +116,7 @@ public class UserRestController {
     }
 	
 	  //-------------------Authenticate a User--------------------------------------------------------
-    
+	
   	@PostMapping(value = "/user/authenticate")
       public ResponseEntity<User> authenticate(@RequestBody User user,HttpSession session) {
           
@@ -142,7 +143,7 @@ public class UserRestController {
       }
 	
 //-------------------User Logout--------------------------------------------------------
-    
+	
   	@PutMapping(value = "/user/logout")
       public ResponseEntity<Void> logout(HttpSession session) {
           
