@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stackroute.activity.dao.CircleDAO;
@@ -21,6 +22,7 @@ import com.stackroute.activity.model.Circle;
 import com.stackroute.activity.model.UserCircle;
 
 @RestController
+@RequestMapping(value="/api/circle")
 public class CircleRestController {
 	
 	private static final Logger logger =
@@ -38,7 +40,7 @@ public class CircleRestController {
 	
 	
 	
-	@PostMapping("/circle/create")
+	@PostMapping
 	public ResponseEntity<Circle> createCircle(@RequestBody Circle circle){
 		
 		Circle c=circleDAO.get(circle.getId());
@@ -46,51 +48,49 @@ public class CircleRestController {
 			
             logger.debug("A circle with name " + circle.getName() + " already exist");
             Circle errorCircle=new Circle();
-            errorCircle.setErrorCode("409");
-            errorCircle.setErrorMessage(messageSource.getMessage("circle.create.failure", new String[]{circle.getName()}, Locale.US));
+            
+            errorCircle.setStatusMessage(messageSource.getMessage("circle.create.failure", new String[]{circle.getName()}, Locale.US));
             return new ResponseEntity<Circle>(errorCircle,HttpStatus.CONFLICT);
         }
 		
 		circleDAO.save(circle);
-		circle.setErrorCode("200");
-		circle.setErrorMessage(messageSource.getMessage("circle.create.success", null, Locale.US));
+		circle.setStatusMessage(messageSource.getMessage("circle.create.success", null, Locale.US));
 		return new ResponseEntity<Circle>(circle,HttpStatus.CREATED);
 	}
 	
 	
-	@PutMapping("/circle/add/{userId}/{circleId}")
+	@PutMapping("/addToCircle/{userId}/{circleId}")
 	public ResponseEntity<UserCircle> addUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
 		
 		boolean status=circleDAO.addUser(userId, circleId);
 		if(status==false){
-			userCircle.setErrorCode("409");
-			userCircle.setErrorMessage(messageSource.getMessage("circle.add.user.failure", new String[]{userId,circleId}, Locale.US));
+			userCircle.setStatusMessage(messageSource.getMessage("circle.add.user.failure", new String[]{userId,circleId}, Locale.US));
 			return new ResponseEntity<UserCircle>(HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		else
 		{
-			userCircle.setErrorCode("200");
-			userCircle.setErrorMessage(messageSource.getMessage("circle.add.user.success", new String[]{userId,circleId}, Locale.US));
+			
+			userCircle.setStatusMessage(messageSource.getMessage("circle.add.user.success", new String[]{userId,circleId}, Locale.US));
 			return new ResponseEntity<UserCircle>(HttpStatus.OK);
 		}
 		
 	}
 	
-	@PutMapping("/circle/remove/{userId}/{circleId}")
+	@PutMapping("/removeFromCircle/{userId}/{circleId}")
 	public ResponseEntity<UserCircle> removeUser(@PathVariable("userId") String userId, @PathVariable("circleId") String circleId){
 		
 		boolean status=circleDAO.removeUser(userId, circleId);
 		if(status==false){
-			userCircle.setErrorCode("404");
-			userCircle.setErrorMessage(messageSource.getMessage("circle.remove.user.failure", new String[]{userId,circleId}, Locale.US));
+			
+			userCircle.setStatusMessage(messageSource.getMessage("circle.remove.user.failure", new String[]{userId,circleId}, Locale.US));
 			return new ResponseEntity<UserCircle>(HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 		else
 		{
-			userCircle.setErrorCode("200");
-			userCircle.setErrorMessage(messageSource.getMessage("circle.remove.user.succss", new String[]{userId,circleId}, Locale.US));
+			
+			userCircle.setStatusMessage(messageSource.getMessage("circle.remove.user.succss", new String[]{userId,circleId}, Locale.US));
 			return new ResponseEntity<UserCircle>(HttpStatus.OK);
 			
 		}
@@ -98,7 +98,7 @@ public class CircleRestController {
 	}
 	
 	//-------------------------------Retrieve all circles-------------------------------------
-	@GetMapping("/circle")
+	@GetMapping
 	public ResponseEntity<List<Circle>> getAllCircles(){
 	
 		return new ResponseEntity<List<Circle>>(circleDAO.getAllCircles(),HttpStatus.OK);
@@ -106,7 +106,7 @@ public class CircleRestController {
 	}
 	
 //-----------------------Retrieve circles for a specific user--------------------------------	
-	@GetMapping("/circle/search/user/{userId}")
+	@GetMapping("/searchByUser/{userId}")
 	public ResponseEntity<List<String>> getMyCircles(@PathVariable("userId") String userId){
 		
 		return new ResponseEntity<List<String>>(circleDAO.getMyCircles(userId),HttpStatus.OK);
@@ -114,7 +114,7 @@ public class CircleRestController {
 	}
 	
 //----------------------Retrieve circles by Search String-----------------------------------	
-	@GetMapping("/circle/search/{searchString}")
+	@GetMapping("/search/{searchString}")
 	public ResponseEntity<List<Circle>> getAllCircles(@PathVariable("searchString") String searchString){
 		
 		return new ResponseEntity<List<Circle>>(circleDAO.getAllCircles(searchString),HttpStatus.OK);

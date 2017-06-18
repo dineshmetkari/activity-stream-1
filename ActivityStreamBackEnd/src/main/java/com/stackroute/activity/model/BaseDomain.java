@@ -8,21 +8,14 @@ import org.springframework.stereotype.Component;
 public class BaseDomain {
 	
 	@Transient
-	public String errorCode;
-	@Transient
-	public String errorMessage;
+	public String statusMessage;
 	
-	public String getErrorCode() {
-		return errorCode;
+	
+	public String getStatusMessage() {
+		return statusMessage;
 	}
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-	public String getErrorMessage() {
-		return errorMessage;
-	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
 	}
 
 }

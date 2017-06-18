@@ -36,18 +36,17 @@ public class FileUploadRestController {
 				fileInfo.setFileName(destinationFile.getPath());
 				fileInfo.setFileSize(inputFile.getSize());
 				fileInfo.setFileType("image");
-				fileInfo.setErrorCode("200");
-				fileInfo.setErrorMessage("File Uploaded successfully");
+				fileInfo.setStatusMessage("File Uploaded successfully");
 				headers.add("File Uploaded Successfully - ", originalFilename);
 				return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 			} catch (Exception e) {
-				fileInfo.setErrorCode("404");
-				fileInfo.setErrorMessage("File was not uploaded");
+				
+				fileInfo.setStatusMessage("File was not uploaded");
 				return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 			}
 		} else {
-			fileInfo.setErrorCode("404");
-			fileInfo.setErrorMessage("File was not uploaded");
+			
+			fileInfo.setStatusMessage("File was not uploaded");
 			return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 
 		}
@@ -66,18 +65,17 @@ public class FileUploadRestController {
 				fileInfo.setFileName(destinationFile.getPath());
 				fileInfo.setFileSize(inputFile.getSize());
 				fileInfo.setFileType("attachment");
-				fileInfo.setErrorCode("200");
-				fileInfo.setErrorMessage("File Uploaded successfully");
+				fileInfo.setStatusMessage("File Uploaded successfully");
 				headers.add("File Uploaded Successfully - ", originalFilename);
 				return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 			} catch (Exception e) {
-				fileInfo.setErrorCode("404");
-				fileInfo.setErrorMessage("File was not uploaded");
+				
+				fileInfo.setStatusMessage("File was not uploaded");
 				return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 			}
 		} else {
-			fileInfo.setErrorCode("404");
-			fileInfo.setErrorMessage("File was not uploaded");
+			
+			fileInfo.setStatusMessage("File was not uploaded");
 			return new ResponseEntity<FileInfo>(fileInfo, HttpStatus.OK);
 
 		}

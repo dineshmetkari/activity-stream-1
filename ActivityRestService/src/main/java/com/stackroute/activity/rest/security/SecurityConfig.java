@@ -38,9 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
   
       http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/user/**").authenticated()
+        .antMatchers("/user**").authenticated()
         .antMatchers("/circle**").authenticated()
-        .antMatchers("/stream/**").authenticated()
+        .antMatchers("/stream**").authenticated()
         .and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//We don't need sessions to be created.
     }
