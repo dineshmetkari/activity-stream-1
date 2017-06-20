@@ -1,6 +1,6 @@
 general:
   build_dir: ActivityStreamBackEnd
 
-  machine:
-  services:
-    - mysql
+  database:
+    override:
+      - mysql -u ubuntu circle_test < db_script.sql
