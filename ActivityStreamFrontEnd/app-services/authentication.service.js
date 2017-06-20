@@ -10,6 +10,7 @@
         var service = {};
 
         service.Login = Login;
+        service.Logout=Logout;
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
 
@@ -18,7 +19,7 @@
         function Login(username, password, callback) {
 
            console.log('inside Login method inside service')
-            $http.post('http://localhost:8080/ActivityRestService/user/authenticate', { id: username, password: password })
+            $http.post('http://localhost:8080/ActivityRestService/api/authenticate', { id: username, password: password })
                 .then(function (res) {
                 	console.log(res.data);
                 	$rootScope.currentUser={ id: res.data.id,
@@ -29,6 +30,22 @@
                 });
 
         }
+        
+        
+        function Logout(callback) {
+
+            console.log('inside Logout method inside service')
+             $http.put('http://localhost:8080/ActivityRestService/api/logout')
+                 .then(function (res) {
+                 	console.log(res.data);
+                 	var response=res.data;
+                     callback(response);
+                 },function(obj){
+                	 console.log(obj.toString());
+                 });
+                 
+
+         }
 
         function SetCredentials(username, password) {
             

@@ -24,33 +24,33 @@
 
         function postToCircle(stream,circleName) {
         	console.log(stream);
-            return $http.post('http://localhost:8080/ActivityRestService/stream/sendMessageToCircle/' + circleName,stream).then(handleSuccess, handleError('Error posting message to circle'));
+            return $http.post('http://localhost:8080/ActivityRestService/api/stream/sendMessageToCircle/' + circleName,stream).then(handleSuccess, handleError('Error posting message to circle'));
         }
         
         function postToUser(stream) {
         	console.log(stream);
-            return $http.post('http://localhost:8080/ActivityRestService/stream/sendMessageToUser/',stream).then(handleSuccess, handleError('Error posting message to circle'));
+            return $http.post('http://localhost:8080/ActivityRestService/api/stream/sendMessageToUser/',stream).then(handleSuccess, handleError('Error posting message to circle'));
         }
         
         function GetAllTags() {
         	
-            return $http.get('http://localhost:8080/ActivityRestService/stream/getAllTags').then(handleSuccess, handleError('Error retrieving tags'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/stream/listAllTags').then(handleSuccess, handleError('Error retrieving tags'));
         }
         
         function ShowMessagesWithTag(tag,pageNumber) {
         	
-            return $http.get('http://localhost:8080/ActivityRestService/stream/showMessagesWithTag/'+tag+"/"+pageNumber).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
+            return $http.get('http://localhost:8080/ActivityRestService/api/stream/showMessagesWithTag/'+tag+"/"+pageNumber).then(handleSuccess, handleError('Error retrieving messages with tag:'+tag));
         }
         
         
         function SubscribeStreamWithTag(userId,tag) {
         	console.log('Service-->SubscribeStreamWithTag called');
-            return $http.put('http://localhost:8080/ActivityRestService/stream/subscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error subscribing to tag'));
+            return $http.put('http://localhost:8080/ActivityRestService/api/stream/subscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error subscribing to tag'));
         }
         
         function UnsubscribeStreamWithTag(userId,tag) {
         	console.log('Service-->UnsubscribeStreamWithTag called');
-            return $http.put('http://localhost:8080/ActivityRestService/stream/unsubscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error unsubscribing to tag'));
+            return $http.put('http://localhost:8080/ActivityRestService/api/stream/unsubscribe/'+userId+'/'+tag).then(handleSuccess, handleError('Error unsubscribing to tag'));
         }
 
        

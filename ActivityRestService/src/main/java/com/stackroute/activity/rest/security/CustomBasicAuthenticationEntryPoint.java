@@ -1,4 +1,4 @@
-package com.stackroute.activity.rest.security;
+/*package com.stackroute.activity.rest.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,3 +31,4 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 	    }
 	
 }
+*/

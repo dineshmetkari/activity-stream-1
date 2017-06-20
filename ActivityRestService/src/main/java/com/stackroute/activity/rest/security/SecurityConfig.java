@@ -1,4 +1,4 @@
-package com.stackroute.activity.rest.security;
+/*package com.stackroute.activity.rest.security;
 
 import javax.sql.DataSource;
 
@@ -38,9 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
   
       http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/user**").authenticated()
-        .antMatchers("/circle**").authenticated()
-        .antMatchers("/stream**").authenticated()
+        .antMatchers("/api/user").anonymous()
+        .antMatchers("/api/user/**").anonymous()
+        .antMatchers("/api/circle").anonymous()
+        .antMatchers("/api/circle/**").anonymous()
+        .antMatchers("/api/stream").anonymous()
+        .antMatchers("/api/stream/**").anonymous()
         .and().httpBasic().realmName(REALM).authenticationEntryPoint(getBasicAuthEntryPoint())
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//We don't need sessions to be created.
     }
@@ -50,10 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return new CustomBasicAuthenticationEntryPoint();
     }
      
-    /* To allow Pre-flight [OPTIONS] request from browser */
+     To allow Pre-flight [OPTIONS] request from browser 
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
 }
+*/

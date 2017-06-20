@@ -66,7 +66,7 @@ public class UserRestController {
 	// -------------------Create a User--------------------------------------------------------
 
 	@PostMapping
-	public ResponseEntity<Void> createUser(@RequestBody User user) {
+	public ResponseEntity<User> createUser(@RequestBody User user) {
 		logger.debug("Creating User " + user.getName());
 
 		User u = userDAO.get(user.getId());
@@ -75,14 +75,14 @@ public class UserRestController {
 			User errorUser = new User();
 			
 			errorUser.setStatusMessage("User with the name " + user.getName() + " already exists");
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			return new ResponseEntity<User>(HttpStatus.CONFLICT);
 		}
 
 		userDAO.save(user);
 		
 		user.setStatusMessage(messageSource.getMessage("user.create.success", null, Locale.US));
 
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		return new ResponseEntity<User>(user,HttpStatus.CREATED);
 	}
 
 	// ------------------- Update a User--------------------------------------------------------

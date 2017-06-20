@@ -68,23 +68,22 @@ public class UserAuthRestController {
 	// -------------------User Logout--------------------------------------------------------
 
 	@PutMapping("/logout")
-	public ResponseEntity<String> logout(HttpServletRequest request) {
+	public ResponseEntity<User> logout(HttpSession session) {
 
-		HttpSession existingSession=request.getSession(false);
-		try {
-		String userId = (String) existingSession.getAttribute("loggedInUserId");
-		System.out.println("userId" + userId);
-		//User user = new User();
-
+		//HttpSession existingSession=request.getSession(false);
 		
+		String userId = (String) session.getAttribute("loggedInUserId");
+		if(userId!=null){
+			
+			System.out.println("logout-->userId: " + userId);
+			User user = new User();
+			session.invalidate();
+			user.setStatusMessage(messageSource.getMessage("user.logout", null, Locale.US));
 
-			existingSession.invalidate();
-			//user.setStatusMessage(messageSource.getMessage("user.logout", null, Locale.US));
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		} else {
 
-			return new ResponseEntity<String>(messageSource.getMessage("user.logout", null, Locale.US), HttpStatus.OK);
-		} catch (Exception e) {
-
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
 		}
 
 	}

@@ -15,7 +15,7 @@
         service.Create = Create;
         
         
-        service.Logout=Logout;
+        /*service.Logout=Logout;*/
         service.GetCirclesById=GetCirclesById;
         service.GetStreamByCircleId=GetStreamByCircleId;
         service.GetAllUsers=GetAllUsers;
@@ -29,43 +29,43 @@
         
 
         function GetById(id) {
-            return $http.get('http://localhost:8080/ActivityRestService/user/id/' + id).then(handleSuccess, handleError('Error getting user by id'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/user/' + id).then(handleSuccess, handleError('Error getting user by id'));
         }
 
        
 
         function Create(user) {
-            return $http.post('http://localhost:8080/ActivityRestService/user/', user).then(createSuccess, handleError('Error creating user'));
+            return $http.post('http://localhost:8080/ActivityRestService/api/user', user).then(createSuccess, handleError('Error creating user'));
         }
 
         
         
-        function Logout(id) {
+        /*function Logout(id) {
             return $http.put('http://localhost:8080/ActivityRestService/user/logout').then(handleSuccess, handleError('Error Logging out'));
-        }
+        }*/
         
         function GetCirclesById(id) {
-            return $http.get('http://localhost:8080/ActivityRestService/circle/search/user/' + id).then(handleSuccess, handleError('Error getting circles by id'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/circle/searchByUser/' + id).then(handleSuccess, handleError('Error getting circles by id'));
         }
         
         function GetStreamByCircleId(id,pageNumber) {
         	console.log('service-->GetStreamByCircleId');
-            return $http.get('http://localhost:8080/ActivityRestService/stream/getMessagesByCircle/' + id+"/"+pageNumber).then(handleSuccess, handleError('Error getting circles by id'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/stream/getMessagesByCircle/' + id+"/"+pageNumber).then(handleSuccess, handleError('Error getting circles by id'));
         }
         
         function GetStreamByUserId(currentUserId,otherUserId,pageNumber) {
-            return $http.get('http://localhost:8080/ActivityRestService/stream/getMessagesByUser/' + currentUserId+'/'+otherUserId+'/'+pageNumber).then(handleSuccess, handleError('Error getting circles by id'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/stream/getMessagesByUser/' + currentUserId+'/'+otherUserId+'/'+pageNumber).then(handleSuccess, handleError('Error getting circles by id'));
         }
         
         
         function GetAllUsers() {
-            return $http.get('http://localhost:8080/ActivityRestService/user/').then(handleSuccess, handleError('Error getting list of users'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/user').then(handleSuccess, handleError('Error getting list of users'));
         }
 
         
         function GetSubscribedTagsById(id) {
         	console.log("Service-->GetSubscribedTagsById");
-            return $http.get('http://localhost:8080/ActivityRestService/tags/search/user/' + id).then(handleSuccess, handleError('Error getting tags by UserId'));
+            return $http.get('http://localhost:8080/ActivityRestService/api/stream/tags/search/user/' + id).then(handleSuccess, handleError('Error getting tags by UserId'));
         }
         // private functions
 

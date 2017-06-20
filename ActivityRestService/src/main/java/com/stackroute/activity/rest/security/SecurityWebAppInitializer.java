@@ -1,7 +1,8 @@
-package com.stackroute.activity.rest.security;
+/*package com.stackroute.activity.rest.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationInitializer{
 
 }
+*/

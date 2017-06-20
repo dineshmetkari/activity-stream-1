@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService','StreamService', 'CircleService','$rootScope','$location'];
-    function HomeController(UserService, StreamService, CircleService, $rootScope,$location) {
+    HomeController.$inject = ['UserService','StreamService', 'CircleService','AuthenticationService','$rootScope','$location'];
+    function HomeController(UserService, StreamService, CircleService,AuthenticationService, $rootScope,$location) {
         var vm = this;
         console.log('username in HomeController:'+$rootScope.currentUser);
         vm.user = null;
@@ -233,11 +233,13 @@
 
         
         function logout() {
-            UserService.Logout()
-            .then(function () {
-            	alert('you have successfully logged out');
+        	
+            AuthenticationService.Logout(function(response){
+            	alert(response.statusMessage);
                 $location.path("/login");
             });
+        	
+        	
         }
         
         function postToCircle(stream,circle) {
