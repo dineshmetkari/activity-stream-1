@@ -84,14 +84,15 @@ public class StreamDAOTestCase {
 
 	@Test
 	public void getMessagesTestCase() {
-		displayAllStreams(streamDAO.getMessages("Dinesh"));
-		assertEquals(2, streamDAO.getMessages("Dinesh").size());
+		displayAllStreams(streamDAO.getMessages("Dinesh",1));
+		
+		assertEquals(2, streamDAO.getMessages("Dinesh",1).size());
 	}
 
 	@Test
 	public void getMessagesFromCircleTestCase() {
-		displayAllStreams(streamDAO.getMessagesFromCircle("hobes"));
-		assertEquals(2, streamDAO.getMessagesFromCircle("hobes").size());
+		displayAllStreams(streamDAO.getMessagesFromCircle("hobes",1));
+		assertEquals(2, streamDAO.getMessagesFromCircle("hobes",1).size());
 	}
 
 	private void displayAllStreams(List<Stream> streams) {

@@ -60,23 +60,29 @@ public class StreamDAOImpl implements StreamDAO{
 	public boolean sendMessageToCircle(String circleName, Stream stream) {
 		try {
 		
+			System.out.println("inside sendMessageToCircle");
 			stream.setCurrentDate();
 			stream.setId((int)( Math.random()*1000000));
 			getCurrentSession().save(stream);
 			StreamCircle streamCircle = new StreamCircle();
 			streamCircle.setId((int)( Math.random()*1000000));
 			streamCircle.setStreamID(stream.getId());
+			System.out.println("1");
 			if(getCircleByName(circleName)==null)
 			{
+				System.out.println("2");
 				return false;
 			}
 			streamCircle.setCircleID(getCircleByName(circleName).getId());
 			getCurrentSession().save(streamCircle);
+			System.out.println("3");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("4");
 			return false;
 		}
+		System.out.println("5");
 		return true;
 	}
 
