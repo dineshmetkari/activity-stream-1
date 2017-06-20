@@ -6,4 +6,4 @@
 
   database:
     override:
-      - mysql -u ubuntu circle_test < dbscript/db_script.sql
+      - mysql -u ubuntu circle_test < /dbscript/db_script.sql
