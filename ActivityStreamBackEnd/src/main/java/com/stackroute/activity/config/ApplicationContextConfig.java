@@ -29,8 +29,8 @@ public class ApplicationContextConfig {
     	BasicDataSource dataSource = new BasicDataSource();
     	dataSource.setDriverClassName("com.mysql.jdbc.Driver");
     	dataSource.setUrl("jdbc:mysql://localhost:3307/activity_stream_db");
-    	dataSource.setUsername("root");
-    	dataSource.setPassword("root");
+    	dataSource.setUsername("ubuntu");
+    	dataSource.setPassword("");
     	
     	return dataSource;
     }

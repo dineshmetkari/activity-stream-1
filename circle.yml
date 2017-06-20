@@ -1,2 +1,6 @@
 general:
   build_dir: ActivityStreamBackEnd
+
+  machine:
+  services:
+    - mysql
