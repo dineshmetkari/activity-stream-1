@@ -6,5 +6,4 @@
 
   database:
     override:
-      - mysql -u ubuntu -e "create database circle_test"
       - mysql -u ubuntu circle_test < db_script.sql
