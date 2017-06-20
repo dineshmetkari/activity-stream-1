@@ -6,4 +6,4 @@
 
   database:
     override:
-      - mysql -u ubuntu -e "./db_script.sql"
+      - mysql -u ubuntu -e db_script.sql
