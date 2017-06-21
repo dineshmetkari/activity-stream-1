@@ -45,8 +45,8 @@ public class UserDAOTestCase {
 	@Test
 	public void createUserTestCase()
 	{
-		user.setId("Atul");
-		user.setName("Atul");
+		user.setId("sample");
+		user.setName("sample");
 		user.setPassword("password");
 		boolean flag =  userDAO.save(user);
 	
