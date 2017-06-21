@@ -45,9 +45,9 @@ public class UserDAOTestCase {
 	@Test
 	public void createUserTestCase()
 	{
-		user.setId("Dinesh");
-		user.setName("Dinesh");
-		user.setPassword("Dinesh");
+		user.setId("Atul");
+		user.setName("Atul");
+		user.setPassword("password");
 		boolean flag =  userDAO.save(user);
 	
 
@@ -94,7 +94,7 @@ public class UserDAOTestCase {
 		//will compare actual and expected
 		//if actual and expected is same - TC will pass
 		//if it is different - TC fail
-		assertEquals(1, actualSize);
+		assertEquals(21, actualSize);
 	}
 	
 	
