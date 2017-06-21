@@ -94,7 +94,7 @@ public class UserDAOTestCase {
 		//will compare actual and expected
 		//if actual and expected is same - TC will pass
 		//if it is different - TC fail
-		assertEquals(21, actualSize);
+		assertEquals(22, actualSize);
 	}
 	
 	
