@@ -83,7 +83,7 @@ public class CircleDAOTestCase {
 		//will compare actual and expected
 		//if actual and expected is same - TC will pass
 		//if it is different - TC fail
-		assertEquals(9, actualSize);
+		assertEquals(10, actualSize);
 	}
 	
 	
@@ -98,13 +98,13 @@ public class CircleDAOTestCase {
 	@Test
 	public void getAllMyCirclesTestCase()
 	{
-		assertEquals(1,	  circleDAO.getMyCircles("somsubhra").size());	
+		assertEquals(5,	  circleDAO.getMyCircles("somsubhra").size());	
 	}
 	
 	@Test
 	public void getAllCirclesBySearchStringTestCase()
 	{
-		assertEquals(1,	  circleDAO.getAllCircles("Plat").size());	
+		assertEquals(1,	  circleDAO.getAllCircles("angular").size());	
 	}
 	
 

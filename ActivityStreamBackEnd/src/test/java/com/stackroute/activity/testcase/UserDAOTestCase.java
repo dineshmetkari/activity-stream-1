@@ -30,7 +30,7 @@ public class UserDAOTestCase {
 	public static void initialize()
 	{
 		context = new AnnotationConfigApplicationContext();
-		context.scan("com.stackroot");
+		context.scan("com.stackroute");
 		context.refresh();
 		
 		//get the userDAO from context
