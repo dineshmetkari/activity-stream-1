@@ -61,7 +61,7 @@ public class StreamDAOTestCase {
 		stream.setStreamType("String");
 		stream.setReceiverID("Farooq");
 
-		assertEquals(true, streamDAO.sendMessageToCircle("gitlab", stream));
+		assertEquals(true, streamDAO.sendMessageToCircle("angular", stream));
 
 	}
 
@@ -86,7 +86,7 @@ public class StreamDAOTestCase {
 	public void getMessagesTestCase() {
 		displayAllStreams(streamDAO.getMessages("Dinesh",1));
 		
-		assertEquals(2, streamDAO.getMessages("Dinesh",1).size());
+		assertEquals(12, streamDAO.getMessages("Dinesh",1).size());
 	}
 
 	@Test

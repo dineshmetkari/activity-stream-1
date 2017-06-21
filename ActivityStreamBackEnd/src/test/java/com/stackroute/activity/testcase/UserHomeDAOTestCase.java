@@ -40,7 +40,7 @@ public class UserHomeDAOTestCase {
 	 		List<UserStream> userStreams = userHomeDAO.getMyInbox("Dinesh");
 	 		System.out.println("User home streams");
 	 		displayStreams(userStreams);
-	 		assertEquals(28,  userStreams.size());
+	 		assertEquals(2,  userStreams.size());
 	 		
 	 		
 	 	}
@@ -51,7 +51,7 @@ public class UserHomeDAOTestCase {
 	 		List<UserStream> userStreams = userHomeDAO.getMyCircleMessages("hobes");
 	 		System.out.println("Circle strems");
 	 		displayStreams(userStreams);
-	 		assertEquals(28,  userStreams.size());
+	 		assertEquals(0,  userStreams.size());
 	 		
 	 		
 	 	}

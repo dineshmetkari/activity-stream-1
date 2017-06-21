@@ -14,9 +14,11 @@ public class UserDAOTestCase {
 
 @Autowired static AnnotationConfigApplicationContext context;
 	
-	@Autowired  static UserDAO  userDAO;
+	@Autowired
+	static UserDAO  userDAO;
 	
-	@Autowired  static User user;
+	@Autowired
+	static User user;
 	
 	
 	//The above objects need to initialize

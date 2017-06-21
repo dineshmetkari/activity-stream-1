@@ -43,9 +43,9 @@ public class CircleDAOTestCase {
 	@Test
 	public void createCircleTestCase()
 	{
-		circle.setAdminID("Swamy");
-		circle.setId("hobes");
-		circle.setName("hobes");
+		circle.setAdminID("somsubhra");
+		circle.setId("circleCI");
+		circle.setName("circleCI");
 		boolean flag =  circleDAO.save(circle);
 	
 
@@ -83,7 +83,7 @@ public class CircleDAOTestCase {
 		//will compare actual and expected
 		//if actual and expected is same - TC will pass
 		//if it is different - TC fail
-		assertEquals(3, actualSize);
+		assertEquals(9, actualSize);
 	}
 	
 	
@@ -98,7 +98,7 @@ public class CircleDAOTestCase {
 	@Test
 	public void getAllMyCirclesTestCase()
 	{
-		assertEquals(1,	  circleDAO.getMyCircles("Swamy").size());	
+		assertEquals(1,	  circleDAO.getMyCircles("somsubhra").size());	
 	}
 	
 	@Test
