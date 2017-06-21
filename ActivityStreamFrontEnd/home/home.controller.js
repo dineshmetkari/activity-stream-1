@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService','StreamService', 'CircleService','AuthenticationService','$rootScope','$location'];
-    function HomeController(UserService, StreamService, CircleService,AuthenticationService, $rootScope,$location) {
+    HomeController.$inject = ['UserService','StreamService','CircleStreamService', 'CircleService','AuthenticationService','$rootScope','$location'];
+    function HomeController(UserService, StreamService,CircleStreamService, CircleService,AuthenticationService, $rootScope,$location) {
         var vm = this;
         console.log('username in HomeController:'+$rootScope.currentUser);
         vm.user = null;
@@ -19,6 +19,7 @@
         vm.circleJoinStatus=null;
         vm.tagSubscriptionStatus=null;
         vm.resultLength=null;
+        vm.newMessageInCircle=null;
         vm.newPageNumber=0;
         vm.circles=[];
         vm.streams=[];
@@ -152,6 +153,7 @@
         }
         
         function selectCircle(id) {
+        	CircleStreamService.setSelectedCircle(id);
         	console.log(id);
         	vm.userCircleFlag='circle';
         	vm.selectedCircle=id;
@@ -243,11 +245,11 @@
         }
         
         function postToCircle(stream,circle) {
-            StreamService.postToCircle(stream,circle)
-            .then(function () {
-            	loadStreamByCircle(1);
+            	
+        	    CircleStreamService.postToCircle(stream,circle);        
+            	//loadStreamByCircle(1);
             	vm.stream.message="";
-            });
+            
         }
         
         function postToUser(stream) {
@@ -447,7 +449,11 @@
         }
         
         
-        
+        CircleStreamService.receive().then(null, null, function(message) {
+        	//alert('You have a new message');
+        	
+        	loadStreamByCircle(1);
+          }); 
         
     }
 
